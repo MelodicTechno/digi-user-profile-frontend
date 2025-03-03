@@ -39,7 +39,7 @@
               type="password"
               id="confirmPassword"
               v-model="form.confirmPassword"
-              class="input-place"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
           />
         </div>
@@ -61,10 +61,10 @@ import { ref } from 'vue';
 // import {userRegisterService} from "@/api/user.js";
 
 // 注册
-const register = async () => {
-  console.log(form.value);
-  await userRegisterService(form.value);
-}
+// const register = async () => {
+//   console.log(form.value);
+//   await userRegisterService(form.value);
+// }
 
 // 定义表单数据
 const form = ref({
