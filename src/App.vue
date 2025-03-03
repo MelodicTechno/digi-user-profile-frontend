@@ -1,14 +1,15 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <NavBar />
-    <SideMenu :currentMenu="currentMenu" @update:currentMenu="currentMenu = $event" />
-    <div class="ml-64 pt-16 p-8">
-      <UserPortrait v-if="currentMenu === 'portrait'" />
-      <BusinessInsights v-if="currentMenu === 'business'" />
-      <NearbyShops v-if="currentMenu === 'nearby'" />
-      <FriendRecommend v-if="currentMenu === 'friends'" />
-    </div>
-  </div>
+<!--  <div class="min-h-screen bg-gray-50">-->
+<!--    <NavBar/>-->
+<!--    <SideMenu :currentMenu="currentMenu" @update:currentMenu="currentMenu = $event" />-->
+<!--    <div class="ml-64 pt-16 p-8">-->
+<!--      <UserPortrait v-if="currentMenu === 'portrait'" />-->
+<!--      <BusinessInsights v-if="currentMenu === 'business'" />-->
+<!--      <NearbyShops v-if="currentMenu === 'nearby'" />-->
+<!--      <FriendRecommend v-if="currentMenu === 'friends'" />-->
+<!--    </div>-->
+<!--  </div>-->
+  <Register/>
 </template>
 
 <script setup>
@@ -19,6 +20,7 @@ import UserPortrait from './components/UserPortrait.vue';
 import BusinessInsights from './components/BusinessInsights.vue';
 import NearbyShops from './components/NearbyShops.vue';
 import FriendRecommend from './components/FriendRecommend.vue';
+import Register from './components/Register.vue';
 
 const currentMenu = ref('portrait');
 </script>
