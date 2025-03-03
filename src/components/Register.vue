@@ -58,7 +58,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import {userRegisterService} from "@/api/user.js";
+// import {userRegisterService} from "@/api/user.js";
 
 // 注册
 const register = async () => {
