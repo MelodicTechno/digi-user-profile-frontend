@@ -1,15 +1,15 @@
 <template>
-<!--  <div class="min-h-screen bg-gray-50">-->
-<!--    <NavBar/>-->
-<!--    <SideMenu :currentMenu="currentMenu" @update:currentMenu="currentMenu = $event" />-->
-<!--    <div class="ml-64 pt-16 p-8">-->
-<!--      <UserPortrait v-if="currentMenu === 'portrait'" />-->
-<!--      <BusinessInsights v-if="currentMenu === 'business'" />-->
-<!--      <NearbyShops v-if="currentMenu === 'nearby'" />-->
-<!--      <FriendRecommend v-if="currentMenu === 'friends'" />-->
-<!--    </div>-->
-<!--  </div>-->
-  <Login/>
+  <div class="min-h-screen bg-gray-50">
+    <NavBar/>
+    <SideMenu :currentMenu="currentMenu" @update:currentMenu="currentMenu = $event" />
+    <div class="ml-64 pt-16 p-8">
+      <UserPortrait v-if="currentMenu === 'portrait'" />
+      <BusinessInsights v-if="currentMenu === 'business'" />
+      <NearbyShops v-if="currentMenu === 'nearby'" />
+      <FriendRecommend v-if="currentMenu === 'friends'" />
+    </div>
+  </div>
+<!--  <Login/>-->
 </template>
 
 <script setup>
