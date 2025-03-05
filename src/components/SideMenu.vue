@@ -1,28 +1,40 @@
 <template>
   <div class="fixed left-0 top-16 w-64 h-full bg-white shadow-lg">
     <div class="py-6">
-      <div v-for="(item, index) in menuItems" :key="index"
-           :class="{'bg-blue-50 border-l-4 border-blue-600': currentMenu === item.id}"
-           class="px-6 py-3 cursor-pointer hover:bg-gray-50"
-           @click="$emit('update:currentMenu', item.id)">
+      <router-link to="/portrait" class="block mb-4bg-blue-50 border-l-4 border-blue-600 hover:border-blue-700">
         <div class="flex items-center space-x-3">
-          <i :class="item.icon" class="text-lg text-gray-600"></i>
-          <span class="text-gray-700">{{ item.name }}</span>
+          <div class="text-lg text-gray-600">
+            用户画像分析
+          </div>
         </div>
-      </div>
+      </router-link>
+      <router-link to="/business" class="block mb-4bg-blue-50 border-l-4 border-blue-600 hover:border-blue-700">
+        <div class="flex items-center space-x-3">
+          <div class="text-lg text-gray-600">
+            经营决策推荐
+          </div>
+        </div>
+      </router-link>
+      <router-link to="/nearby" class="block mb-4bg-blue-50 border-l-4 border-blue-600 hover:border-blue-700">
+        <div class="flex items-center space-x-3">
+          <div class="text-lg text-gray-600">
+            附近商家推荐
+          </div>
+        </div>
+      </router-link>
+      <router-link to="/friends" class="block mb-4bg-blue-50 border-l-4 border-blue-600 hover:border-blue-700">
+        <div class="flex items-center space-x-3">
+          <div class="text-lg text-gray-600">
+            好友智能推荐
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
 
-<script setup>
-defineProps({
-  currentMenu: String,
-});
-
-const menuItems = [
-  { id: 'portrait', name: '用户画像分析', icon: 'fas fa-user-chart' },
-  { id: 'business', name: '经营决策推荐', icon: 'fas fa-chart-line' },
-  { id: 'nearby', name: '附近商家推荐', icon: 'fas fa-store' },
-  { id: 'friends', name: '好友智能推荐', icon: 'fas fa-users' },
-];
+<script>
+export default {
+  name: 'SideMenu',
+};
 </script>
