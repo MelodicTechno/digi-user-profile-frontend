@@ -1,4 +1,4 @@
-import request from '@/utils/request.js';
+import request from '@/utils/request.js.template';
 
 // 注册接口的函数
 export const userRegisterService = (registerData) => {

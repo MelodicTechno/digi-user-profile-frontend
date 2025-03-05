@@ -1,61 +1,33 @@
-//定制请求的实例
+import axios from "axios";
 
-//导入axios  npm install axios
-import axios from 'axios';
-// import { ElMessage } from 'element-plus'
-// 定义一个变量,记录公共的前缀  ,  baseURL
-// const baseURL = 'http://localhost:8080';
-const baseURL = '/api';
-const instance = axios.create({baseURL})
+const instance = axios.create({
+    baseURL: '/api', // 使用 Vite 的代理功能
+});
 
-import { useTokenStore } from '@/stores/token.js';
-// 添加请求拦截器
+// 请求拦截器
 instance.interceptors.request.use(
-    (config) => {
-        // 请求前的回调
-        // 添加token
-        const tokenStore = useTokenStore();
-        // 判断有没有token
-        if (tokenStore.token) {
-            config.headers.Authorization = tokenStore.token
+    config => {
+        // 动态设置 Authorization 头
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
-        return config
+        return config;
     },
-    (err) => {
-        // 请求错误的回调
-        Promise.reject(err)
+    error => {
+        return Promise.reject(error);
     }
-)
+);
 
-// import { useRouter } from 'vue-router';
-// const router = useRouter();
-import router from '@/router'
-
-//添加响应拦截器
+// 响应拦截器
 instance.interceptors.response.use(
-    result=>{
-        // 判断业务状态码
-        if (result.data.code === 0) {
-            return result.data;
-        }
-
-        // 操作失败
-        // alert(result.data.msg? result.data.msg : '服务异常')
-        // ElMessage.error(result.data.msg? result.data.msg : '服务异常')
-
-        // 异步状态的操作转换为失败
-        return Promise.reject(result.data)
+    response => {
+        return response.data; // 只返回响应体
     },
-    err=>{
-        // 判断响应状态码，如果401就提示登录
-        if (err.response.status === 401) {
-            // ElMessage.error('请先登录')
-            router.push('/login')
-        } else {
-            // ElMessage.error('服务异常')
-        }
-        return Promise.reject(err);//异步的状态转化成失败的状态
+    error => {
+        alert('服务异常');
+        return Promise.reject(error);
     }
-)
+);
 
 export default instance;

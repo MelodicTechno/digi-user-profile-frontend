@@ -9,7 +9,7 @@
 <!--      <FriendRecommend v-if="currentMenu === 'friends'" />-->
 <!--    </div>-->
 <!--  </div>-->
-  <Register/>
+  <Login/>
 </template>
 
 <script setup>
@@ -20,7 +20,7 @@ import UserPortrait from './components/UserPortrait.vue';
 import BusinessInsights from './components/BusinessInsights.vue';
 import NearbyShops from './components/NearbyShops.vue';
 import FriendRecommend from './components/FriendRecommend.vue';
-import Register from './components/Register.vue';
+import Login from './components/Login.vue';
 
 const currentMenu = ref('portrait');
 </script>

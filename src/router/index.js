@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import RegisterPage from '@/components/Register.vue'; // 确保路径正确
+import Login from '@/components/Login.vue'; // 确保路径正确
 
 const routes = [
     {
-        path: '/register',
-        name: 'Register',
-        component: RegisterPage,
+        path: '/login',
+        name: 'Login',
+        component: Login,
     },
     // 其他路由
 ];
