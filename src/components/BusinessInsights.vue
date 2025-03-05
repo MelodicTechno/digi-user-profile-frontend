@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 mt-6">
     <div class="grid grid-cols-3 gap-6">
       <div v-for="(insight, index) in businessInsights" :key="index"
            class="bg-white p-6 rounded-lg shadow-sm">

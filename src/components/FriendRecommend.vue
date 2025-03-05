@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 mt-6">
     <div class="bg-white p-6 rounded-lg shadow-sm">
       <h3 class="text-lg font-medium mb-6">推荐好友</h3>
       <div class="grid grid-cols-4 gap-6">

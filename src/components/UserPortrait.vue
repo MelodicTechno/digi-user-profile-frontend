@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="grid grid-cols-4 gap-6">
+    <div class="grid grid-cols-4 gap-6 mt-6">
       <div v-for="(stat, index) in userStats" :key="index"
            class="bg-white p-6 rounded-lg shadow-sm">
         <div class="text-gray-500 mb-2">{{ stat.label }}</div>

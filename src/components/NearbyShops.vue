@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-6 mt-6">
     <div class="bg-white p-6 rounded-lg shadow-sm">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-medium">附近热门商家</h3>

@@ -1,11 +1,14 @@
-import axios from "axios";
+// src/utils/request.js
+import axios from 'axios';
 
-const instance = axios.create({
-    baseURL: '/api', // 使用 Vite 的代理功能
+const API_URL = '/api'; // 根据你的 Vite 配置，这里使用 /api 作为基础路径
+
+const request = axios.create({
+    baseURL: API_URL,
 });
 
 // 请求拦截器
-instance.interceptors.request.use(
+request.interceptors.request.use(
     config => {
         // 动态设置 Authorization 头
         const token = localStorage.getItem('token');
@@ -20,7 +23,7 @@ instance.interceptors.request.use(
 );
 
 // 响应拦截器
-instance.interceptors.response.use(
+request.interceptors.response.use(
     response => {
         return response.data; // 只返回响应体
     },
@@ -30,4 +33,4 @@ instance.interceptors.response.use(
     }
 );
 
-export default instance;
+export default request;

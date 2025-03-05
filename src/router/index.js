@@ -5,6 +5,12 @@ import UserPortrait from '@/components/UserPortrait.vue';
 import BusinessInsights from '@/components/BusinessInsights.vue';
 import NearbyShops from '@/components/NearbyShops.vue';
 import FriendRecommend from '@/components/FriendRecommend.vue';
+import BusinessVisualize from "@/components/visualize/Business.vue";
+import CheckinVisualize from "@/components/visualize/Checkin.vue";
+import GeneralVisualize from "@/components/visualize/General.vue";
+import RateVisualize from "@/components/visualize/Rate.vue";
+import ReviewVisualize from "@/components/visualize/Review.vue";
+import UserVisualize from "@/components/visualize/User.vue";
 
 const routes = [
     {
@@ -40,6 +46,36 @@ const routes = [
     {
         path: '/',
         redirect: '/portrait',
+    },
+    {
+        path: '/visualize/business',
+        name: 'BusinessVisualize',
+        component: BusinessVisualize,
+    },
+    {
+        path: '/visualize/checkin',
+        name: 'CheckinVisualize',
+        component: CheckinVisualize,
+    },
+    {
+        path: '/visualize/general',
+        name: 'GeneralVisualize',
+        component: GeneralVisualize,
+    },
+    {
+        path: '/visualize/rate',
+        name: 'RateVisualize',
+        component: RateVisualize,
+    },
+    {
+        path: '/visualize/review',
+        name: 'ReviewVisualize',
+        component: ReviewVisualize,
+    },
+    {
+        path: '/visualize/user',
+        name: 'UserVisualize',
+        component: UserVisualize,
     },
 ];
 
