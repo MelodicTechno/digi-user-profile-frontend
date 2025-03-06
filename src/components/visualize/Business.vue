@@ -52,13 +52,17 @@ const initEcharts = () => {
 const initMostCommonShopChart = () => {
   const chartDom = document.getElementById('most_common_shop');
   const myChart = echarts.init(chartDom);
+  const colors = ['#e1dbe9', '#f5c386', '#9cbce3'];
   const option = {
     title: {
       text: '最常见商户'
     },
     tooltip: {},
     legend: {
-      data: ['商户数量']
+      data: ['商户数量'],
+      itemStyle: {
+        color: '#f5c386',
+      }
     },
     xAxis: {
       data: statistics.value.most_common_shop.map(item => item.name)
@@ -68,7 +72,16 @@ const initMostCommonShopChart = () => {
       {
         name: '商户数量',
         type: 'bar',
-        data: statistics.value.most_common_shop.map(item => item.shop_count)
+        data: statistics.value.most_common_shop.map((item, index) => ({
+          value: item.shop_count,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
+        }
       }
     ]
   };
@@ -78,23 +91,40 @@ const initMostCommonShopChart = () => {
 const initShopMostCityChart = () => {
   const chartDom = document.getElementById('shop_most_city');
   const myChart = echarts.init(chartDom);
+  const colors = ['#8bbde0', '#b1caa2', '#f9a490'];
   const option = {
     title: {
       text: '商户最多的10个城市'
     },
     tooltip: {},
     legend: {
-      data: ['商户数量']
+      data: ['商户数量'],
+      itemStyle: {
+        color: '#f5c386',
+      }
     },
     xAxis: {
-      data: statistics.value.shop_most_city.map(item => item.city)
+      data: statistics.value.shop_most_city.map(item => item.city),
+      label: {
+        show: true,
+        position: 'top'
+      }
     },
     yAxis: {},
     series: [
       {
         name: '商户数量',
         type: 'bar',
-        data: statistics.value.shop_most_city.map(item => item.shop_count)
+        data: statistics.value.shop_most_city.map((item, index) => ({
+          value: item.shop_count,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
+        }
       }
     ]
   };
@@ -104,13 +134,17 @@ const initShopMostCityChart = () => {
 const initShopMostStateChart = () => {
   const chartDom = document.getElementById('shop_most_state');
   const myChart = echarts.init(chartDom);
+  const colors = ['#6e8734', '#eea079', '#f57e91'];
   const option = {
     title: {
       text: '商户最多的前五个州'
     },
     tooltip: {},
     legend: {
-      data: ['商户数量']
+      data: ['商户数量'],
+      itemStyle: {
+        color: '#f5c386',
+      }
     },
     xAxis: {
       data: statistics.value.shop_most_state.map(item => item.state)
@@ -120,23 +154,37 @@ const initShopMostStateChart = () => {
       {
         name: '商户数量',
         type: 'bar',
-        data: statistics.value.shop_most_state.map(item => item.shop_count)
+        data: statistics.value.shop_most_state.map((item, index) => ({
+          value: item.shop_count,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
+        }
       }
     ]
   };
   myChart.setOption(option);
 };
 
+// 最常见商户及其评均评分
 const initCommonWithRateChart = () => {
   const chartDom = document.getElementById('common_with_rate');
   const myChart = echarts.init(chartDom);
+  const colors = ['#fa8d55', '#f3e4cf', '#b1c69f'];
   const option = {
     title: {
       text: '最常见商户及其平均评分'
     },
     tooltip: {},
     legend: {
-      data: ['平均评分']
+      data: ['平均评分'],
+      itemStyle: {
+        color: '#f5c386',
+      }
     },
     xAxis: {
       data: statistics.value.common_with_rate.map(item => item.name)
@@ -146,7 +194,19 @@ const initCommonWithRateChart = () => {
       {
         name: '平均评分',
         type: 'bar',
-        data: statistics.value.common_with_rate.map(item => item.avg_stars)
+        data: statistics.value.common_with_rate.map((item, index) => ({
+          value: item.avg_stars,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top',
+          formatter: function (params) {
+            return params.value.toFixed(2); // 显示2位小数
+          }
+        }
       }
     ]
   };
@@ -172,7 +232,13 @@ const initStarsHighCityChart = () => {
       {
         name: '平均评分',
         type: 'bar',
-        data: statistics.value.stars_high_city.map(item => item.average_stars)
+        data: statistics.value.stars_high_city.map(item => item.average_stars),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#d4a373'},
+            {offset: 1, color: '#a6a6a6'}
+          ])
+        }
       }
     ]
   };
@@ -198,7 +264,13 @@ const initMostStarsChart = () => {
       {
         name: '五星评论数量',
         type: 'bar',
-        data: statistics.value.most_stars.map(item => item.five_stars_counts)
+        data: statistics.value.most_stars.map(item => item.five_stars_counts),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#f4f4f9'},
+            {offset: 1, color: '#e0e0e0'}
+          ])
+        }
       }
     ]
   };
@@ -224,7 +296,10 @@ const initReviewInYearChart = () => {
       {
         name: '评论数',
         type: 'line',
-        data: statistics.value.review_in_year.map(item => item.review_count)
+        data: statistics.value.review_in_year.map(item => item.review_count),
+        itemStyle: {
+          color: '#b8daff'
+        }
       }
     ]
   };
@@ -250,7 +325,13 @@ const initBusinessCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.business_checkin_ranking.map(item => item.total_checkins)
+        data: statistics.value.business_checkin_ranking.map(item => item.total_checkins),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#f0e1d2'},
+            {offset: 1, color: '#b8daff'}
+          ])
+        }
       }
     ]
   };
@@ -276,7 +357,13 @@ const initCityCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.city_checkin_ranking.map(item => item.total_checkins)
+        data: statistics.value.city_checkin_ranking.map(item => item.total_checkins),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#a6a6a6'},
+            {offset: 1, color: '#d4a373'}
+          ])
+        }
       }
     ]
   };
@@ -302,7 +389,10 @@ const initCheckinPerHourChart = () => {
       {
         name: '打卡数',
         type: 'line',
-        data: statistics.value.checkin_per_hour.map(item => item.checkin_count)
+        data: statistics.value.checkin_per_hour.map(item => item.checkin_count),
+        itemStyle: {
+          color: '#f4f4f9'
+        }
       }
     ]
   };
@@ -328,7 +418,10 @@ const initCheckinPerYearChart = () => {
       {
         name: '打卡数',
         type: 'line',
-        data: statistics.value.checkin_per_year.map(item => item.checkin_count)
+        data: statistics.value.checkin_per_year.map(item => item.checkin_count),
+        itemStyle: {
+          color: '#e0e0e0'
+        }
       }
     ]
   };
@@ -354,7 +447,10 @@ const initEliteUserPercentChart = () => {
       {
         name: '精英用户比',
         type: 'line',
-        data: statistics.value.elite_user_percent.map(item => item.ratio)
+        data: statistics.value.elite_user_percent.map(item => item.ratio),
+        itemStyle: {
+          color: '#b8daff'
+        }
       }
     ]
   };
@@ -363,7 +459,7 @@ const initEliteUserPercentChart = () => {
 </script>
 
 <template>
-  <div class=" mt-8">
+  <div class="mt-8 grid grid-cols-2 gap-4">
     <div id="most_common_shop" style="width: 600px;height:400px;"></div>
     <div id="shop_most_city" style="width: 600px;height:400px;"></div>
     <div id="shop_most_state" style="width: 600px;height:400px;"></div>
