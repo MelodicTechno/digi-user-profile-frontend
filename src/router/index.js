@@ -15,6 +15,10 @@ import LayoutVue from '@/components/LayoutVue.vue'
 
 const routes = [
     {
+        path: '/',
+        redirect: '/login',
+    },
+    {
         path: '/login',
         name: 'Login',
         component: Login,
@@ -51,38 +55,33 @@ const routes = [
                 name: 'UserVisualize',
                 component: UserVisualize,
             },
+            {
+
+                path: '/test-api',
+                name: 'TestApi',
+                component: TestApi,
+            },
+            {
+                path: '/portrait',
+                name: 'UserPortrait',
+                component: UserPortrait,
+            },
+            {
+                path: '/business',
+                name: 'BusinessInsights',
+                component: BusinessInsights,
+            },
+            {
+                path: '/nearby',
+                name: 'NearbyShops',
+                component: NearbyShops,
+            },
+            {
+                path: '/friends',
+                name: 'FriendRecommend',
+                component: FriendRecommend,
+            },
         ]
-    },
-
-    {
-
-        path: '/test-api',
-        name: 'TestApi',
-        component: TestApi,
-    },
-    {
-        path: '/portrait',
-        name: 'UserPortrait',
-        component: UserPortrait,
-    },
-    {
-        path: '/business',
-        name: 'BusinessInsights',
-        component: BusinessInsights,
-    },
-    {
-        path: '/nearby',
-        name: 'NearbyShops',
-        component: NearbyShops,
-    },
-    {
-        path: '/friends',
-        name: 'FriendRecommend',
-        component: FriendRecommend,
-    },
-    {
-        path: '/',
-        redirect: '/login',
     },
 
 ];
