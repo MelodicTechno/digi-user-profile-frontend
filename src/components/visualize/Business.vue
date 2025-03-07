@@ -100,7 +100,7 @@ const initShopMostCityChart = () => {
     legend: {
       data: ['商户数量'],
       itemStyle: {
-        color: '#f5c386',
+        color: '#b1caa2',
       }
     },
     xAxis: {
@@ -143,7 +143,7 @@ const initShopMostStateChart = () => {
     legend: {
       data: ['商户数量'],
       itemStyle: {
-        color: '#f5c386',
+        color: '#eea079',
       }
     },
     xAxis: {
@@ -183,7 +183,7 @@ const initCommonWithRateChart = () => {
     legend: {
       data: ['平均评分'],
       itemStyle: {
-        color: '#f5c386',
+        color: '#f3e4cf',
       }
     },
     xAxis: {
@@ -216,13 +216,17 @@ const initCommonWithRateChart = () => {
 const initStarsHighCityChart = () => {
   const chartDom = document.getElementById('stars_high_city');
   const myChart = echarts.init(chartDom);
+  const colors = ['#6ec02d', '#fdf3e8', '#ff9c7f'];
   const option = {
     title: {
       text: '评分最高的城市'
     },
     tooltip: {},
     legend: {
-      data: ['平均评分']
+      data: ['平均评分'],
+      itemStyle: {
+        color: '#6ec02d',
+      }
     },
     xAxis: {
       data: statistics.value.stars_high_city.map(item => item.city)
@@ -232,12 +236,15 @@ const initStarsHighCityChart = () => {
       {
         name: '平均评分',
         type: 'bar',
-        data: statistics.value.stars_high_city.map(item => item.average_stars),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#d4a373'},
-            {offset: 1, color: '#a6a6a6'}
-          ])
+        data: statistics.value.stars_high_city.map((item, index) => ({
+          value: item.average_stars,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
         }
       }
     ]
@@ -248,13 +255,17 @@ const initStarsHighCityChart = () => {
 const initMostStarsChart = () => {
   const chartDom = document.getElementById('most_stars');
   const myChart = echarts.init(chartDom);
+  const colors = ['#ff7f74', '#c5d255', '#ffd957'];
   const option = {
     title: {
       text: '收获五星评论最多的商户'
     },
     tooltip: {},
     legend: {
-      data: ['五星评论数量']
+      data: ['五星评论数量'],
+      itemStyle: {
+        color: '#ff7f74',
+      }
     },
     xAxis: {
       data: statistics.value.most_stars.map(item => item.business_name)
@@ -264,13 +275,12 @@ const initMostStarsChart = () => {
       {
         name: '五星评论数量',
         type: 'bar',
-        data: statistics.value.most_stars.map(item => item.five_stars_counts),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#f4f4f9'},
-            {offset: 1, color: '#e0e0e0'}
-          ])
-        }
+        data: statistics.value.most_stars.map((item, index) => ({
+          value: item.five_stars_counts,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
       }
     ]
   };
@@ -298,7 +308,7 @@ const initReviewInYearChart = () => {
         type: 'line',
         data: statistics.value.review_in_year.map(item => item.review_count),
         itemStyle: {
-          color: '#b8daff'
+          color: '#515792'
         }
       }
     ]
@@ -309,13 +319,17 @@ const initReviewInYearChart = () => {
 const initBusinessCheckinRankingChart = () => {
   const chartDom = document.getElementById('business_checkin_ranking');
   const myChart = echarts.init(chartDom);
+  const colors = ['#fa8d55', '#f3e4cf', '#b1c69f'];
   const option = {
     title: {
       text: '商家打卡数排序'
     },
     tooltip: {},
     legend: {
-      data: ['打卡数']
+      data: ['打卡数'],
+      itemStyle: {
+        color: '#fa8d55',
+      }
     },
     xAxis: {
       data: statistics.value.business_checkin_ranking.map(item => item.name)
@@ -325,12 +339,15 @@ const initBusinessCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.business_checkin_ranking.map(item => item.total_checkins),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#f0e1d2'},
-            {offset: 1, color: '#b8daff'}
-          ])
+        data: statistics.value.business_checkin_ranking.map((item, index) => ({
+          value: item.total_checkins,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
         }
       }
     ]
@@ -341,13 +358,17 @@ const initBusinessCheckinRankingChart = () => {
 const initCityCheckinRankingChart = () => {
   const chartDom = document.getElementById('city_checkin_ranking');
   const myChart = echarts.init(chartDom);
+  const colors = ['#003f60', '#fe701a', '#e3b9a5'];
   const option = {
     title: {
       text: '最喜欢打卡的城市'
     },
     tooltip: {},
     legend: {
-      data: ['打卡数']
+      data: ['打卡数'],
+      itemStyle: {
+        color: '#003f60',
+      }
     },
     xAxis: {
       data: statistics.value.city_checkin_ranking.map(item => item.city)
@@ -357,12 +378,15 @@ const initCityCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.city_checkin_ranking.map(item => item.total_checkins),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#a6a6a6'},
-            {offset: 1, color: '#d4a373'}
-          ])
+        data: statistics.value.city_checkin_ranking.map((item, index) => ({
+          value: item.total_checkins,
+          itemStyle: {
+            color: colors[index % colors.length]
+          }
+        })),
+        label: {
+          show: true,
+          position: 'top'
         }
       }
     ]
@@ -391,7 +415,7 @@ const initCheckinPerHourChart = () => {
         type: 'line',
         data: statistics.value.checkin_per_hour.map(item => item.checkin_count),
         itemStyle: {
-          color: '#f4f4f9'
+          color: '#325d71'
         }
       }
     ]
@@ -420,7 +444,7 @@ const initCheckinPerYearChart = () => {
         type: 'line',
         data: statistics.value.checkin_per_year.map(item => item.checkin_count),
         itemStyle: {
-          color: '#e0e0e0'
+          color: '#bf6f87'
         }
       }
     ]
@@ -449,7 +473,7 @@ const initEliteUserPercentChart = () => {
         type: 'line',
         data: statistics.value.elite_user_percent.map(item => item.ratio),
         itemStyle: {
-          color: '#b8daff'
+          color: '#e4a5b3'
         }
       }
     ]
