@@ -19,6 +19,7 @@ const routes = [
         component: Login,
     },
     {
+
         path: '/test-api',
         name: 'TestApi',
         component: TestApi,
@@ -45,7 +46,7 @@ const routes = [
     },
     {
         path: '/',
-        redirect: '/visualize/business',
+        redirect: '/login',
     },
     {
         path: '/visualize/business',
