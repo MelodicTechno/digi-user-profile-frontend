@@ -257,7 +257,7 @@ const initMostStarsChart = () => {
       data: ['五星评论数量']
     },
     xAxis: {
-      data: statistics.value.most_stars.map(item => item.business_id)
+      data: statistics.value.most_stars.map(item => item.business_name)
     },
     yAxis: {},
     series: [
