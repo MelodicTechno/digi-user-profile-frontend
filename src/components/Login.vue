@@ -58,6 +58,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import router from "@/router/index.js";
 
 // 注册
 // const register = async () => {
@@ -84,6 +85,7 @@ const handleSubmit = () => {
     return;
   }
 
+  router.push('../visualize/business')
   console.log('登录信息:', loginData.value); // 输出登录信息
   alert('注册成功！');
 };

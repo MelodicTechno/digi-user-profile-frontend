@@ -45,7 +45,7 @@ const routes = [
     },
     {
         path: '/',
-        redirect: '/portrait',
+        redirect: '/visualize/business',
     },
     {
         path: '/visualize/business',
