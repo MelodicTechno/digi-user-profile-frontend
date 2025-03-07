@@ -459,7 +459,7 @@ const initEliteUserPercentChart = () => {
 </script>
 
 <template>
-  <div class="mt-8 grid grid-cols-2 gap-4">
+  <div class="ml-8 mt-8 grid grid-cols-2 gap-4">
     <div id="most_common_shop" style="width: 600px;height:400px;"></div>
     <div id="shop_most_city" style="width: 600px;height:400px;"></div>
     <div id="shop_most_state" style="width: 600px;height:400px;"></div>

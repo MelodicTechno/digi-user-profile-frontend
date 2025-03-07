@@ -11,6 +11,7 @@ import GeneralVisualize from "@/components/visualize/General.vue";
 import RateVisualize from "@/components/visualize/Rate.vue";
 import ReviewVisualize from "@/components/visualize/Review.vue";
 import UserVisualize from "@/components/visualize/User.vue";
+import LayoutVue from '@/components/LayoutVue.vue'
 
 const routes = [
     {
@@ -18,6 +19,41 @@ const routes = [
         name: 'Login',
         component: Login,
     },
+    {
+        path: '/', component: LayoutVue, redirect: '/visualize/business', children: [
+            {
+                path: '/visualize/business',
+                name: 'BusinessVisualize',
+                component: BusinessVisualize,
+            },
+            {
+                path: '/visualize/checkin',
+                name: 'CheckinVisualize',
+                component: CheckinVisualize,
+            },
+            {
+                path: '/visualize/general',
+                name: 'GeneralVisualize',
+                component: GeneralVisualize,
+            },
+            {
+                path: '/visualize/rate',
+                name: 'RateVisualize',
+                component: RateVisualize,
+            },
+            {
+                path: '/visualize/review',
+                name: 'ReviewVisualize',
+                component: ReviewVisualize,
+            },
+            {
+                path: '/visualize/user',
+                name: 'UserVisualize',
+                component: UserVisualize,
+            },
+        ]
+    },
+
     {
 
         path: '/test-api',
@@ -48,36 +84,7 @@ const routes = [
         path: '/',
         redirect: '/login',
     },
-    {
-        path: '/visualize/business',
-        name: 'BusinessVisualize',
-        component: BusinessVisualize,
-    },
-    {
-        path: '/visualize/checkin',
-        name: 'CheckinVisualize',
-        component: CheckinVisualize,
-    },
-    {
-        path: '/visualize/general',
-        name: 'GeneralVisualize',
-        component: GeneralVisualize,
-    },
-    {
-        path: '/visualize/rate',
-        name: 'RateVisualize',
-        component: RateVisualize,
-    },
-    {
-        path: '/visualize/review',
-        name: 'ReviewVisualize',
-        component: ReviewVisualize,
-    },
-    {
-        path: '/visualize/user',
-        name: 'UserVisualize',
-        component: UserVisualize,
-    },
+
 ];
 
 const router = createRouter({

@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <NavBar />
-    <SideMenu />
-    <div class="ml-64 pt-16 p-8">
+<!--    <NavBar />-->
+<!--    <SideMenu />-->
+    <div>
       <router-view />
     </div>
   </div>
