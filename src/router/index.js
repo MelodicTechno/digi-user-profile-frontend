@@ -3,7 +3,7 @@ import Login from '@/components/Login.vue';
 import TestApi from '@/components/TestApi.vue';
 import UserPortrait from '@/components/analyze/UserPortrait.vue';
 import BusinessInsights from '@/components/analyze/BusinessInsights.vue';
-import NearbyShops from '@/components/NearbyShops.vue';
+import NearbyShops from '@/components/visualize/NearbyShops.vue';
 import FriendRecommend from '@/components/analyze/FriendRecommend.vue';
 import BusinessVisualize from "@/components/visualize/Business.vue";
 import CheckinVisualize from "@/components/visualize/Checkin.vue";
@@ -72,7 +72,7 @@ const routes = [
                 component: BusinessInsights,
             },
             {
-                path: '/nearby',
+                path: '/visualize/nearby',
                 name: 'NearbyShops',
                 component: NearbyShops,
             },
