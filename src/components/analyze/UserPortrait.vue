@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import PreferenceChart from './charts/PreferenceChart.vue';
-import PortraitChart from './charts/PortraitChart.vue';
-import SentimentChart from './charts/SentimentChart.vue';
+import PreferenceChart from '../charts/PreferenceChart.vue';
+import PortraitChart from '../charts/PortraitChart.vue';
+import SentimentChart from '../charts/SentimentChart.vue';
 
 const userStats = [
   { label: '消费总额', value: '¥8,546', trend: 12.5 },

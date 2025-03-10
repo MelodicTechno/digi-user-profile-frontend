@@ -17,5 +17,5 @@
 </template>
 
 <script setup>
-const userAvatar = 'https://img.moegirl.tw/common/f/f8/Lappaland.jpg';
+const userAvatar = 'https://ihs-hmleadernews.oss-cn-shanghai.aliyuncs.com/efd8c111-dc4a-4db7-941b-2257cecb1687.jpg';
 </script>

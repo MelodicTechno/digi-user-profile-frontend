@@ -1,13 +1,13 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getStatistics, updateStatistics } from '@/api/analyze.js';
+import { getBusinessStatistics, updateStatistics } from '@/api/analyze.js';
 import * as echarts from 'echarts';
 
 const statistics = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await getStatistics();
+    const response = await getBusinessStatistics();
     statistics.value = response;
     console.log('Statistics:', response);
     initEcharts();
@@ -496,14 +496,10 @@ const initEliteUserPercentChart = () => {
     <div id="checkin_per_hour" style="width: 600px;height:400px;"></div>
     <div id="checkin_per_year" style="width: 600px;height:400px;"></div>
     <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
-    <button @click="updateData" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  </div>
+  <div class="flex justify-center">
+    <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
       更新数据
     </button>
   </div>
 </template>
-
-<style scoped>
-button {
-  margin-top: 10px;
-}
-</style>

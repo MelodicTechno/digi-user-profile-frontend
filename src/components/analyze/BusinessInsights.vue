@@ -459,27 +459,5 @@ const initEliteUserPercentChart = () => {
 </script>
 
 <template>
-  <div class="mt-8 grid grid-cols-2 gap-4 ">
-    <div id="most_common_shop" style="width: 600px;height:400px;"></div>
-    <div id="shop_most_city" style="width: 600px;height:400px;"></div>
-    <div id="shop_most_state" style="width: 600px;height:400px;"></div>
-    <div id="common_with_rate" style="width: 600px;height:400px;"></div>
-    <div id="stars_high_city" style="width: 600px;height:400px;"></div>
-    <div id="most_stars" style="width: 600px;height:400px;"></div>
-    <div id="review_in_year" style="width: 600px;height:400px;"></div>
-    <div id="business_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="city_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_hour" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_year" style="width: 600px;height:400px;"></div>
-    <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
-    <button @click="updateData" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      更新数据
-    </button>
-  </div>
-</template>
 
-<style scoped>
-button {
-  margin-top: 10px;
-}
-</style>
+</template>

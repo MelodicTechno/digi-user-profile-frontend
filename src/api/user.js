@@ -1,11 +1,8 @@
-import request from '@/utils/request.js.template';
+import request from '@/utils/request';
 
-// 注册接口的函数
-export const userRegisterService = (registerData) => {
-    // 借助URLSearchParams
-    const params = new URLSearchParams();
-    for (let key in registerData) {
-        params.append(key, registerData[key]);
-    }
-    return request.post('/user/register', registerData);
-}
+const API_URL = '/api';
+
+// 登录
+export const login = (userId) => {
+    return request.post(`${API_URL}/login/`, { user_id: userId });
+};

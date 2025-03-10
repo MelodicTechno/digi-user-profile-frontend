@@ -11,8 +11,23 @@ export const getStatistics = () => {
     return request.get(API_URL+ '/get_statistics/');
 };
 
+// 获得商户的数据统计
+export const getBusinessStatistics = () => {
+    return request.get(API_URL+ '/get_business_statistics/');
+};
+
+// 获得用户的数据统计
+export const getUserStatistics = () => {
+    return request.get(API_URL+ '/get_user_statistics/');
+};
+
 export const updateStatistics = () => {
     return request.get(`${API_URL}/update_statistics/`);
+};
+
+// 更新用户数据
+export const updateUserStatistics = () => {
+    return request.get(API_URL + '/update_user_statistics/');
 };
 
 export const listNearbyBusinesses = (params) => {
