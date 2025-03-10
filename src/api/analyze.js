@@ -25,6 +25,11 @@ export const updateStatistics = () => {
     return request.get(`${API_URL}/update_statistics/`);
 };
 
+// 更新商户数据
+export const updateBusinessStatistics = () => {
+    return request.get(API_URL + '/update_business_statistics/');
+};
+
 // 更新用户数据
 export const updateUserStatistics = () => {
     return request.get(API_URL + '/update_user_statistics/');

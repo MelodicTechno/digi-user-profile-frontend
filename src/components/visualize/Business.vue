@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getBusinessStatistics, updateStatistics } from '@/api/analyze.js';
+import {getBusinessStatistics, updateBusinessStatistics, updateStatistics,} from '@/api/analyze.js';
 import * as echarts from 'echarts';
 
 const statistics = ref(null);
@@ -20,7 +20,7 @@ const updateData = async () => {
   const confirmed = confirm('确定要更新数据吗？');
   if (confirmed) {
     try {
-      const response = await updateStatistics();
+      const response = await updateBusinessStatistics();
       alert('数据更新成功');
       statistics.value = response;
       initEcharts();
@@ -499,7 +499,7 @@ const initEliteUserPercentChart = () => {
   </div>
   <div class="flex justify-center">
     <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
-      更新数据
+      更新商户数据
     </button>
   </div>
 </template>
