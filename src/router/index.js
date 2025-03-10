@@ -8,7 +8,7 @@ import FriendRecommend from '@/components/analyze/FriendRecommend.vue';
 import BusinessVisualize from "@/components/visualize/Business.vue";
 import CheckinVisualize from "@/components/visualize/Checkin.vue";
 import GeneralVisualize from "@/components/visualize/General.vue";
-import RateVisualize from "@/components/visualize/Rate.vue";
+import ScoreVisualize from "@/components/visualize/Score.vue";
 import ReviewVisualize from "@/components/visualize/Review.vue";
 import UserVisualize from "@/components/visualize/User.vue";
 import LayoutVue from '@/components/LayoutVue.vue'
@@ -41,9 +41,9 @@ const routes = [
                 component: GeneralVisualize,
             },
             {
-                path: '/visualize/rate',
-                name: 'RateVisualize',
-                component: RateVisualize,
+                path: '/visualize/score',
+                name: 'ScoreVisualize',
+                component: ScoreVisualize,
             },
             {
                 path: '/visualize/review',

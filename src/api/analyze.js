@@ -21,6 +21,11 @@ export const getUserStatistics = () => {
     return request.get(API_URL+ '/get_user_statistics/');
 };
 
+// 获得评分的数据统计
+export const getScoreStatistics = () => {
+    return request.get(API_URL+ '/get_score_statistics/');
+};
+
 export const updateStatistics = () => {
     return request.get(`${API_URL}/update_statistics/`);
 };
@@ -34,6 +39,11 @@ export const updateBusinessStatistics = () => {
 export const updateUserStatistics = () => {
     return request.get(API_URL + '/update_user_statistics/');
 };
+
+// 更新评分数据
+export const updateScoreStatistics = () => {
+    return request.get(API_URL + '/update_score_statistics/');
+}
 
 export const listNearbyBusinesses = (params) => {
     return request.get(API_URL + '/businesses/nearby/', { params });
