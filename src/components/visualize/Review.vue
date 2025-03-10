@@ -1,11 +1,180 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { getReviewStatistics, updateReviewStatistics } from '@/api/analyze.js';
+import * as echarts from 'echarts';
 
+const statistics = ref(null);
+
+onMounted(async () => {
+  try {
+    const response = await getReviewStatistics();
+    statistics.value = response;
+    console.log('Review Statistics:', response);
+    initEcharts();
+  } catch (error) {
+    console.error('Failed to fetch review statistics:', error);
+  }
+});
+
+const updateData = async () => {
+  const confirmed = confirm('确定要更新数据吗？');
+  if (confirmed) {
+    try {
+      const response = await updateReviewStatistics();
+      alert('数据更新成功');
+      statistics.value = response;
+      initEcharts();
+    } catch (error) {
+      alert('数据更新失败');
+      console.error('Failed to update review statistics:', error);
+    }
+  }
+};
+
+const initEcharts = () => {
+  if (!statistics.value) return;
+
+  // 初始化所有图表
+  initYearReviewCountChart();
+  initUserReviewCountChart();
+  initTopWordsChart();
+  initGraphChart();
+};
+
+const initYearReviewCountChart = () => {
+  const chartDom = document.getElementById('year_review_count');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '年度评论统计'
+    },
+    tooltip: {},
+    legend: {
+      data: ['评论数量']
+    },
+    xAxis: {
+      data: statistics.value.year_review_counts.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '评论数量',
+        type: 'bar',
+        data: statistics.value.year_review_counts.map(item => item.review_counts),
+        itemStyle: {
+          color: '#515792'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initUserReviewCountChart = () => {
+  const chartDom = document.getElementById('user_review_count');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '用户评论统计'
+    },
+    tooltip: {},
+    legend: {
+      data: ['评论数量']
+    },
+    xAxis: {
+      data: statistics.value.user_review_counts.map(item => item.name)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '评论数量',
+        type: 'bar',
+        data: statistics.value.user_review_counts.map(item => item.review_counts),
+        itemStyle: {
+          color: '#325d71'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initTopWordsChart = () => {
+  const chartDom = document.getElementById('top_words');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '评论高频词'
+    },
+    tooltip: {},
+    legend: {
+      data: ['词频']
+    },
+    xAxis: {
+      data: statistics.value.top_20_words.map(item => item.word)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '词频',
+        type: 'bar',
+        data: statistics.value.top_20_words.map(item => item.count),
+        itemStyle: {
+          color: '#bf6f87'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initGraphChart = () => {
+  const chartDom = document.getElementById('graph');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '评论关系图'
+    },
+    tooltip: {},
+    series: [
+      {
+        name: '评论关系',
+        type: 'graph',
+        layout: 'force',
+        data: statistics.value.graph_data.nodes.map(node => ({
+          name: node.name,
+          symbolSize: 10,
+          itemStyle: {
+            normal: {
+              color: '#515792'
+            }
+          }
+        })),
+        links: statistics.value.graph_data.edges.map(edge => ({
+          source: edge.source,
+          target: edge.target,
+          value: edge.value
+        })),
+        lineStyle: {
+          color: '#325d71'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
 </script>
 
 <template>
-
+  <div class="ml-8 mt-8 grid grid-cols-2 gap-4">
+    <div id="year_review_count" style="width: 600px;height:400px;"></div>
+    <div id="user_review_count" style="width: 600px;height:400px;"></div>
+    <div id="top_words" style="width: 600px;height:400px;"></div>
+    <div id="graph" style="width: 600px;height:400px;"></div>
+  </div>
+  <div class="flex justify-center">
+    <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
+      更新评论数据
+    </button>
+  </div>
 </template>
-
-<style scoped>
-
-</style>
