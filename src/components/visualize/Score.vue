@@ -110,7 +110,7 @@ const initTop5BusinessesChart = () => {
       data: ['5星评价数量']
     },
     xAxis: {
-      data: statistics.value.top5_businesses.map(item => item.business_id)
+      data: statistics.value.top5_businesses.map(item => item.name)
     },
     yAxis: {},
     series: [
