@@ -38,7 +38,7 @@ const initUserEcharts = () => {
   initNewUserEveryYearChart();
   initReviewCountChart();
   initFansMostChart();
-  initUserEveryYearChart();
+  // initUserEveryYearChart();
   initReviewCountYearChart();
   initTotalAndSilentChart();
 };
@@ -231,7 +231,7 @@ const initTotalAndSilentChart = () => {
     <div id="new_user_every_year" style="width: 600px;height:400px;"></div>
     <div id="review_count" style="width: 600px;height:400px;"></div>
     <div id="fans_most" style="width: 600px;height:400px;"></div>
-    <div id="user_every_year" style="width: 600px;height:400px;"></div>
+    <!-- <div id="user_every_year" style="width: 600px;height:400px;"></div> -->
     <div id="review_count_year" style="width: 600px;height:400px;"></div>
     <div id="total_and_silent" style="width: 600px;height:400px;"></div>
   </div>
