@@ -1,13 +1,13 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import {getBusinessStatistics, updateBusinessStatistics, updateStatistics,} from '@/api/analyze.js';
+import { getStatistics, updateStatistics } from '@/api/analyze.js';
 import * as echarts from 'echarts';
 
 const statistics = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await getBusinessStatistics();
+    const response = await getStatistics();
     statistics.value = response;
     console.log('Statistics:', response);
     initEcharts();
@@ -20,7 +20,7 @@ const updateData = async () => {
   const confirmed = confirm('确定要更新数据吗？');
   if (confirmed) {
     try {
-      const response = await updateBusinessStatistics();
+      const response = await updateStatistics();
       alert('数据更新成功');
       statistics.value = response;
       initEcharts();
@@ -100,7 +100,7 @@ const initShopMostCityChart = () => {
     legend: {
       data: ['商户数量'],
       itemStyle: {
-        color: '#b1caa2',
+        color: '#f5c386',
       }
     },
     xAxis: {
@@ -143,7 +143,7 @@ const initShopMostStateChart = () => {
     legend: {
       data: ['商户数量'],
       itemStyle: {
-        color: '#eea079',
+        color: '#f5c386',
       }
     },
     xAxis: {
@@ -183,7 +183,7 @@ const initCommonWithRateChart = () => {
     legend: {
       data: ['平均评分'],
       itemStyle: {
-        color: '#f3e4cf',
+        color: '#f5c386',
       }
     },
     xAxis: {
@@ -216,17 +216,13 @@ const initCommonWithRateChart = () => {
 const initStarsHighCityChart = () => {
   const chartDom = document.getElementById('stars_high_city');
   const myChart = echarts.init(chartDom);
-  const colors = ['#6ec02d', '#fdf3e8', '#ff9c7f'];
   const option = {
     title: {
       text: '评分最高的城市'
     },
     tooltip: {},
     legend: {
-      data: ['平均评分'],
-      itemStyle: {
-        color: '#6ec02d',
-      }
+      data: ['平均评分']
     },
     xAxis: {
       data: statistics.value.stars_high_city.map(item => item.city)
@@ -236,15 +232,12 @@ const initStarsHighCityChart = () => {
       {
         name: '平均评分',
         type: 'bar',
-        data: statistics.value.stars_high_city.map((item, index) => ({
-          value: item.average_stars,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
+        data: statistics.value.stars_high_city.map(item => item.average_stars),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#d4a373'},
+            {offset: 1, color: '#a6a6a6'}
+          ])
         }
       }
     ]
@@ -255,32 +248,29 @@ const initStarsHighCityChart = () => {
 const initMostStarsChart = () => {
   const chartDom = document.getElementById('most_stars');
   const myChart = echarts.init(chartDom);
-  const colors = ['#ff7f74', '#c5d255', '#ffd957'];
   const option = {
     title: {
       text: '收获五星评论最多的商户'
     },
     tooltip: {},
     legend: {
-      data: ['五星评论数量'],
-      itemStyle: {
-        color: '#ff7f74',
-      }
+      data: ['五星评论数量']
     },
     xAxis: {
-      data: statistics.value.most_stars.map(item => item.business_name)
+      data: statistics.value.most_stars.map(item => item.business_id)
     },
     yAxis: {},
     series: [
       {
         name: '五星评论数量',
         type: 'bar',
-        data: statistics.value.most_stars.map((item, index) => ({
-          value: item.five_stars_counts,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
+        data: statistics.value.most_stars.map(item => item.five_stars_counts),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#f4f4f9'},
+            {offset: 1, color: '#e0e0e0'}
+          ])
+        }
       }
     ]
   };
@@ -308,7 +298,7 @@ const initReviewInYearChart = () => {
         type: 'line',
         data: statistics.value.review_in_year.map(item => item.review_count),
         itemStyle: {
-          color: '#515792'
+          color: '#b8daff'
         }
       }
     ]
@@ -319,17 +309,13 @@ const initReviewInYearChart = () => {
 const initBusinessCheckinRankingChart = () => {
   const chartDom = document.getElementById('business_checkin_ranking');
   const myChart = echarts.init(chartDom);
-  const colors = ['#fa8d55', '#f3e4cf', '#b1c69f'];
   const option = {
     title: {
       text: '商家打卡数排序'
     },
     tooltip: {},
     legend: {
-      data: ['打卡数'],
-      itemStyle: {
-        color: '#fa8d55',
-      }
+      data: ['打卡数']
     },
     xAxis: {
       data: statistics.value.business_checkin_ranking.map(item => item.name)
@@ -339,15 +325,12 @@ const initBusinessCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.business_checkin_ranking.map((item, index) => ({
-          value: item.total_checkins,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
+        data: statistics.value.business_checkin_ranking.map(item => item.total_checkins),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#f0e1d2'},
+            {offset: 1, color: '#b8daff'}
+          ])
         }
       }
     ]
@@ -358,17 +341,13 @@ const initBusinessCheckinRankingChart = () => {
 const initCityCheckinRankingChart = () => {
   const chartDom = document.getElementById('city_checkin_ranking');
   const myChart = echarts.init(chartDom);
-  const colors = ['#003f60', '#fe701a', '#e3b9a5'];
   const option = {
     title: {
       text: '最喜欢打卡的城市'
     },
     tooltip: {},
     legend: {
-      data: ['打卡数'],
-      itemStyle: {
-        color: '#003f60',
-      }
+      data: ['打卡数']
     },
     xAxis: {
       data: statistics.value.city_checkin_ranking.map(item => item.city)
@@ -378,15 +357,12 @@ const initCityCheckinRankingChart = () => {
       {
         name: '打卡数',
         type: 'bar',
-        data: statistics.value.city_checkin_ranking.map((item, index) => ({
-          value: item.total_checkins,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
+        data: statistics.value.city_checkin_ranking.map(item => item.total_checkins),
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {offset: 0, color: '#a6a6a6'},
+            {offset: 1, color: '#d4a373'}
+          ])
         }
       }
     ]
@@ -415,7 +391,7 @@ const initCheckinPerHourChart = () => {
         type: 'line',
         data: statistics.value.checkin_per_hour.map(item => item.checkin_count),
         itemStyle: {
-          color: '#325d71'
+          color: '#f4f4f9'
         }
       }
     ]
@@ -444,7 +420,7 @@ const initCheckinPerYearChart = () => {
         type: 'line',
         data: statistics.value.checkin_per_year.map(item => item.checkin_count),
         itemStyle: {
-          color: '#bf6f87'
+          color: '#e0e0e0'
         }
       }
     ]
@@ -473,7 +449,7 @@ const initEliteUserPercentChart = () => {
         type: 'line',
         data: statistics.value.elite_user_percent.map(item => item.ratio),
         itemStyle: {
-          color: '#e4a5b3'
+          color: '#b8daff'
         }
       }
     ]
@@ -483,23 +459,5 @@ const initEliteUserPercentChart = () => {
 </script>
 
 <template>
-  <div class="ml-8 mt-8 grid grid-cols-2 gap-4">
-    <div id="most_common_shop" style="width: 600px;height:400px;"></div>
-    <div id="shop_most_city" style="width: 600px;height:400px;"></div>
-    <div id="shop_most_state" style="width: 600px;height:400px;"></div>
-    <div id="common_with_rate" style="width: 600px;height:400px;"></div>
-    <div id="stars_high_city" style="width: 600px;height:400px;"></div>
-    <div id="most_stars" style="width: 600px;height:400px;"></div>
-    <div id="review_in_year" style="width: 600px;height:400px;"></div>
-    <div id="business_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="city_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_hour" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_year" style="width: 600px;height:400px;"></div>
-    <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
-  </div>
-  <div class="flex justify-center">
-    <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
-      更新商户数据
-    </button>
-  </div>
+
 </template>
