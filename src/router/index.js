@@ -76,7 +76,7 @@ const routes = [
         path: '/visualize/user',
         name: 'UserVisualize',
         component: UserVisualize,
-    },
+    }
 ];
 
 const router = createRouter({
