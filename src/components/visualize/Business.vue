@@ -47,6 +47,12 @@ const initEcharts = () => {
   initCheckinPerHourChart();
   initCheckinPerYearChart();
   initEliteUserPercentChart();
+  initNewUserEveryYearChart();
+  initReviewCountChart();
+  initFansMostChart();
+  initUserEveryYearChart();
+  initReviewCountYearChart();
+  initTotalAndSilentChart();
 };
 
 const initMostCommonShopChart = () => {
@@ -456,6 +462,188 @@ const initEliteUserPercentChart = () => {
   };
   myChart.setOption(option);
 };
+
+const initNewUserEveryYearChart = () => {
+  const chartDom = document.getElementById('new_user_every_year');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '每年加入的用户数量'
+    },
+    tooltip: {},
+    legend: {
+      data: ['用户数量']
+    },
+    xAxis: {
+      data: statistics.value.new_user_every_year.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '用户数量',
+        type: 'line',
+        data: statistics.value.new_user_every_year.map(item => item.user_count),
+        itemStyle: {
+          color: '#b8daff'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initReviewCountChart = () => {
+  const chartDom = document.getElementById('review_count');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '评论达人'
+    },
+    tooltip: {},
+    legend: {
+      data: ['评论数量']
+    },
+    xAxis: {
+      data: statistics.value.review_count.map(item => item.name)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '评论数量',
+        type: 'bar',
+        data: statistics.value.review_count.map(item => item.review_count),
+        itemStyle: {
+          color: '#f4f4f9'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initFansMostChart = () => {
+  const chartDom = document.getElementById('fans_most');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '人气最高的用户（fans）'
+    },
+    tooltip: {},
+    legend: {
+      data: ['粉丝数量']
+    },
+    xAxis: {
+      data: statistics.value.fans_most.map(item => item.name)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '粉丝数量',
+        type: 'bar',
+        data: statistics.value.fans_most.map(item => item.fans),
+        itemStyle: {
+          color: '#e0e0e0'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initUserEveryYearChart = () => {
+  const chartDom = document.getElementById('user_every_year');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '每年的新用户数'
+    },
+    tooltip: {},
+    legend: {
+      data: ['新用户数量']
+    },
+    xAxis: {
+      data: statistics.value.user_every_year.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '新用户数量',
+        type: 'line',
+        data: statistics.value.user_every_year.map(item => item.new_user),
+        itemStyle: {
+          color: '#a6a6a6'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initReviewCountYearChart = () => {
+  const chartDom = document.getElementById('review_count_year');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '每年的评论数'
+    },
+    tooltip: {},
+    legend: {
+      data: ['评论数量']
+    },
+    xAxis: {
+      data: statistics.value.review_count_year.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '评论数量',
+        type: 'line',
+        data: statistics.value.review_count_year.map(item => item.review),
+        itemStyle: {
+          color: '#b8daff'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initTotalAndSilentChart = () => {
+  const chartDom = document.getElementById('total_and_silent');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '每年的总用户数和沉默用户数'
+    },
+    tooltip: {},
+    legend: {
+      data: ['总用户数', '沉默用户数']
+    },
+    xAxis: {
+      data: statistics.value.total_and_silent.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '总用户数',
+        type: 'line',
+        data: statistics.value.total_and_silent.map(item => item.total_users),
+        itemStyle: {
+          color: '#b8daff'
+        }
+      },
+      {
+        name: '沉默用户数',
+        type: 'line',
+        data: statistics.value.total_and_silent.map(item => item.silent_users),
+        itemStyle: {
+          color: '#e0e0e0'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
 </script>
 
 <template>
@@ -472,6 +660,12 @@ const initEliteUserPercentChart = () => {
     <div id="checkin_per_hour" style="width: 600px;height:400px;"></div>
     <div id="checkin_per_year" style="width: 600px;height:400px;"></div>
     <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
+    <div id="new_user_every_year" style="width: 600px;height:400px;"></div>
+    <div id="review_count" style="width: 600px;height:400px;"></div>
+    <div id="fans_most" style="width: 600px;height:400px;"></div>
+    <div id="user_every_year" style="width: 600px;height:400px;"></div>
+    <div id="review_count_year" style="width: 600px;height:400px;"></div>
+    <div id="total_and_silent" style="width: 600px;height:400px;"></div>
     <button @click="updateData" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
       更新数据
     </button>
