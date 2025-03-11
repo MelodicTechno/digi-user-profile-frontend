@@ -68,7 +68,7 @@ export const testApi = () => {
 
 // 更新评论数据
 export const updateReviewStatistics = () => {
-    return request.get(API_URL + '/update_reviews_statistics/');
+    return request.get(API_URL + '/update_review_statistics/');
 };
 
 // 获取评论数据统计
