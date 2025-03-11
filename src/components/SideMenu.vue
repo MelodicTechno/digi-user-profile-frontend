@@ -69,6 +69,7 @@
         <i class="fas fa-store text-lg text-gray-600"></i>
         <span class="text-gray-700">附近商家推荐</span>
       </router-link>
+
       <router-link
           to="/friends"
           class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
@@ -76,6 +77,16 @@
       >
         <i class="fas fa-users text-lg text-gray-600"></i>
         <span class="text-gray-700">好友智能推荐</span>
+      </router-link>
+
+      <!--  用户信息    -->
+      <router-link
+          to="/user_info"
+          class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
+          :class="{ 'bg-blue-100 border-l-4 border-blue-500': currentMenu === '/user_info' }"
+      >
+        <i class="fas fa-users text-lg text-gray-600"></i>
+        <span class="text-gray-700">用户信息</span>
       </router-link>
     </div>
   </div>

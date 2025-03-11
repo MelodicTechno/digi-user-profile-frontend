@@ -7,8 +7,8 @@
         <p class="text-sm text-gray-600">用户角色：管理员</p>
       </div>
     </div>
-    <div class="mt-6">
-      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" @click="goBack">返回</button>
+    <div class="mt-6 flex justify-center">
+      <button class="bg-[#f5c386] text-white px-4 py-2 rounded hover:bg-[#f5c386d9]" @click="goBack">返回</button>
     </div>
   </div>
 </template>
