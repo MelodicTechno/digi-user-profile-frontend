@@ -60,7 +60,7 @@ const initYearReviewCountChart = () => {
       {
         name: '评论数量',
         type: 'bar',
-        data: statistics.value.year_review_counts.map(item => item.review_counts),
+        data: statistics.value.year_review_counts.map(item => item.review_count),
         itemStyle: {
           color: '#515792'
         }
