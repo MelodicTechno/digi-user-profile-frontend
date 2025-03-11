@@ -177,6 +177,14 @@ const initWordCloud = () => {
   const chartDom = document.getElementById('word_cloud');
   const myChart = echarts.init(chartDom);
   const option = {
+    title: {
+      text: '评论词云图', // 添加标题
+      left: 'center', // 标题位置
+      textStyle: {
+        color: '#333', // 标题颜色
+        fontWeight: 'bold' // 标题字体粗细
+      }
+    },
     series: [{
       type: 'wordCloud',
       shape: 'circle',
