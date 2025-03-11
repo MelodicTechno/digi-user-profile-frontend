@@ -37,6 +37,15 @@
       </router-link>
 
       <router-link
+          to="/visualize/checkin"
+          class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
+          :class="{ 'bg-blue-100 border-l-4 border-blue-500': currentMenu === '/visualize/checkin' }"
+      >
+        <i class="fas fa-user-chart text-lg text-gray-600"></i>
+        <span class="text-gray-700">打卡分析</span>
+      </router-link>
+
+      <router-link
           to="/portrait"
           class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
           :class="{ 'bg-blue-100 border-l-4 border-blue-500': currentMenu === '/portrait' }"

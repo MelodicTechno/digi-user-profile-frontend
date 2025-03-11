@@ -42,10 +42,6 @@ const initEcharts = () => {
   initStarsHighCityChart();
   initMostStarsChart();
   initReviewInYearChart();
-  initBusinessCheckinRankingChart();
-  initCityCheckinRankingChart();
-  initCheckinPerHourChart();
-  initCheckinPerYearChart();
   initEliteUserPercentChart();
 };
 
@@ -316,142 +312,6 @@ const initReviewInYearChart = () => {
   myChart.setOption(option);
 };
 
-const initBusinessCheckinRankingChart = () => {
-  const chartDom = document.getElementById('business_checkin_ranking');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#fa8d55', '#f3e4cf', '#b1c69f'];
-  const option = {
-    title: {
-      text: '商家打卡数排序'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数'],
-      itemStyle: {
-        color: '#fa8d55',
-      }
-    },
-    xAxis: {
-      data: statistics.value.business_checkin_ranking.map(item => item.name)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'bar',
-        data: statistics.value.business_checkin_ranking.map((item, index) => ({
-          value: item.total_checkins,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCityCheckinRankingChart = () => {
-  const chartDom = document.getElementById('city_checkin_ranking');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#003f60', '#fe701a', '#e3b9a5'];
-  const option = {
-    title: {
-      text: '最喜欢打卡的城市'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数'],
-      itemStyle: {
-        color: '#003f60',
-      }
-    },
-    xAxis: {
-      data: statistics.value.city_checkin_ranking.map(item => item.city)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'bar',
-        data: statistics.value.city_checkin_ranking.map((item, index) => ({
-          value: item.total_checkins,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCheckinPerHourChart = () => {
-  const chartDom = document.getElementById('checkin_per_hour');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '每小时打卡数'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.checkin_per_hour.map(item => item.hour)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'line',
-        data: statistics.value.checkin_per_hour.map(item => item.checkin_count),
-        itemStyle: {
-          color: '#325d71'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCheckinPerYearChart = () => {
-  const chartDom = document.getElementById('checkin_per_year');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '每年打卡数'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.checkin_per_year.map(item => item.year)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'line',
-        data: statistics.value.checkin_per_year.map(item => item.checkin_count),
-        itemStyle: {
-          color: '#bf6f87'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
 const initEliteUserPercentChart = () => {
   const chartDom = document.getElementById('elite_user_percent');
   const myChart = echarts.init(chartDom);
@@ -491,10 +351,6 @@ const initEliteUserPercentChart = () => {
     <div id="stars_high_city" style="width: 600px;height:400px;"></div>
     <div id="most_stars" style="width: 600px;height:400px;"></div>
     <div id="review_in_year" style="width: 600px;height:400px;"></div>
-    <div id="business_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="city_checkin_ranking" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_hour" style="width: 600px;height:400px;"></div>
-    <div id="checkin_per_year" style="width: 600px;height:400px;"></div>
     <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
   </div>
   <div class="flex justify-center">

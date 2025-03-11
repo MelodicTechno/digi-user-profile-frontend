@@ -75,3 +75,13 @@ export const updateReviewStatistics = () => {
 export const getReviewStatistics = () => {
     return request.get(API_URL + '/get_review_statistics/');
 };
+
+// 更新打卡数据
+export const updateCheckinStatistics = () => {
+    return request.get(API_URL + '/update_checkin_statistics/');
+};
+
+// 获取打卡数据
+export const getCheckinStatistics = () => {
+    return request.get(API_URL + '/get_checkin_statistics/');
+};
