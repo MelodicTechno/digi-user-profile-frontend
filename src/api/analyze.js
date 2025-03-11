@@ -95,3 +95,13 @@ export const getWordCloudData = () => {
 export const updateWordCloudData = () => {
     return request.get(API_URL + '/update_wordcloud_data/');
 };
+
+// 更新巨他妈难的那个表
+export const updateYearlyStatistics = () => {
+    return request.get(API_URL + '/update_yearly_statistics/');
+}
+
+// 获得巨他妈难的那个表
+export const getYearlyStatistics = () => {
+    return request.get(API_URL + '/get_yearly_statistics/');
+}
