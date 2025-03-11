@@ -28,27 +28,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
+import {useUserStore} from '@/stores/userStore'; // 引入 user store
 import router from "@/router/index.js";
-
-// 注册
-// const register = async () => {
-//   console.log(form.value);
-//   await userRegisterService(form.value);
-// }
 
 // 定义登录表单数据
 const loginData = ref({
   userid: '',
 });
 
+// 获取 user store
+const userStore = useUserStore();
+
 // 处理表单提交
 const handleSubmit = () => {
   console.log('loginData:', loginData.value); // 输出当前的登录数据
 
+  // 存储用户 ID 到 user store
+  userStore.setUserInfo({userid: loginData.value.userid});
 
-  router.push('../visualize/business')
+  // 跳转到指定页面
+  router.push('/visualize/business');
+
   console.log('登录信息:', loginData.value); // 输出登录信息
-  // alert('注册成功！');
 };
 </script>
