@@ -12,6 +12,7 @@ import ScoreVisualize from "@/components/visualize/Score.vue";
 import ReviewVisualize from "@/components/visualize/Review.vue";
 import UserVisualize from "@/components/visualize/User.vue";
 import LayoutVue from '@/components/LayoutVue.vue'
+import UserInfo from "@/components/user/UserInfo.vue";
 
 const routes = [
     {
@@ -81,6 +82,11 @@ const routes = [
                 name: 'FriendRecommend',
                 component: FriendRecommend,
             },
+            {
+                path: '/user_info',
+                name: 'UserInfo',
+                component: UserInfo,
+            }
         ]
     },
 

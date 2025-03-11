@@ -1,463 +1,85 @@
+<template>
+  <div class="mt-3 p-6 max-w-5xl mx-auto space-y-8 bg-white rounded-2xl shadow-sm">
+    <!-- 查询模块 -->
+    <div class="space-y-4">
+      <h2 class="text-2xl font-semibold text-slate-800 tracking-tight">
+        <span class="bg-gradient-to-r to-slate-600 bg-clip-text">
+          商户经营建议
+        </span>
+      </h2>
+      <div class="flex gap-3 pb-6 border-b border-slate-100">
+        <input
+            v-model="businessId"
+            type="text"
+            placeholder="输入商户ID"
+            class="flex-1 px-4 py-3 text-slate-700 border border-slate-200 rounded-xl
+                   focus:ring-2 focus:ring-blue-100 focus:border-blue-500 placeholder-slate-400
+                   transition-all duration-150"
+            @keyup.enter="fetchBusinessDetail"
+        />
+        <button
+            @click="fetchBusinessDetail"
+            class="px-6 py-3 bg-blue-800 text-white rounded-xl hover:bg-blue-700
+                   transition-colors shadow-md hover:shadow-lg active:scale-95"
+        >
+          {{ isLoading ? '查询中...' : '查询' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- 结果展示 -->
+    <div v-if="businessDetail" class="grid grid-cols-2 gap-4">
+      <div
+          v-for="(value, key) in businessDetail"
+          :key="key"
+          class="group p-4 rounded-xl border border-slate-100 hover:border-blue-100
+               transition-all duration-200 hover:shadow-sm"
+          :class="value ? 'bg-white' : 'bg-slate-50'"
+      >
+        <div class="flex justify-between items-center">
+          <span class="font-medium text-slate-700">{{ key }}</span>
+          <span
+              class="text-sm px-3 py-1 rounded-full font-medium"
+              :class="value
+              ? 'bg-blue-100 text-blue-800'
+              : 'bg-slate-200 text-slate-700'"
+          >
+            {{ value ? '已达标' : '待优化' }}
+          </span>
+        </div>
+
+        <!-- 状态指示条 -->
+        <div class="mt-2 h-1 rounded-full overflow-hidden bg-slate-100">
+          <div
+              class="h-full transition-all duration-500"
+              :class="value ? 'w-full bg-blue-500' : 'w-1/3 bg-slate-400'"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { onMounted, ref } from 'vue';
-import { getStatistics, updateStatistics } from '@/api/analyze.js';
-import * as echarts from 'echarts';
+import { ref } from 'vue';
+import { getBusinessdetail } from '@/api/business';
 
-const statistics = ref(null);
+const businessId = ref('');
+const businessDetail = ref(null);
+const isLoading = ref(false);
+// tailwind.config.js
 
-onMounted(async () => {
+const fetchBusinessDetail = async () => {
+  if (!businessId.value.trim()) return;
+
   try {
-    const response = await getStatistics();
-    statistics.value = response;
-    console.log('Statistics:', response);
-    initEcharts();
-  } catch (error) {
-    console.error('Failed to fetch statistics:', error);
+    isLoading.value = true;
+    businessDetail.value = null;
+    const response = await getBusinessdetail(businessId.value.trim());
+    businessDetail.value = response;
+  } finally {
+    isLoading.value = false;
+
   }
-});
-
-const updateData = async () => {
-  const confirmed = confirm('确定要更新数据吗？');
-  if (confirmed) {
-    try {
-      const response = await updateStatistics();
-      alert('数据更新成功');
-      statistics.value = response;
-      initEcharts();
-    } catch (error) {
-      alert('数据更新失败');
-      console.error('Failed to update statistics:', error);
-    }
-  }
-};
-
-const initEcharts = () => {
-  if (!statistics.value) return;
-
-  // 初始化所有图表
-  initMostCommonShopChart();
-  initShopMostCityChart();
-  initShopMostStateChart();
-  initCommonWithRateChart();
-  initStarsHighCityChart();
-  initMostStarsChart();
-  initReviewInYearChart();
-  initBusinessCheckinRankingChart();
-  initCityCheckinRankingChart();
-  initCheckinPerHourChart();
-  initCheckinPerYearChart();
-  initEliteUserPercentChart();
-};
-
-const initMostCommonShopChart = () => {
-  const chartDom = document.getElementById('most_common_shop');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#e1dbe9', '#f5c386', '#9cbce3'];
-  const option = {
-    title: {
-      text: '最常见商户'
-    },
-    tooltip: {},
-    legend: {
-      data: ['商户数量'],
-      itemStyle: {
-        color: '#f5c386',
-      }
-    },
-    xAxis: {
-      data: statistics.value.most_common_shop.map(item => item.name)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '商户数量',
-        type: 'bar',
-        data: statistics.value.most_common_shop.map((item, index) => ({
-          value: item.shop_count,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initShopMostCityChart = () => {
-  const chartDom = document.getElementById('shop_most_city');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#8bbde0', '#b1caa2', '#f9a490'];
-  const option = {
-    title: {
-      text: '商户最多的10个城市'
-    },
-    tooltip: {},
-    legend: {
-      data: ['商户数量'],
-      itemStyle: {
-        color: '#f5c386',
-      }
-    },
-    xAxis: {
-      data: statistics.value.shop_most_city.map(item => item.city),
-      label: {
-        show: true,
-        position: 'top'
-      }
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '商户数量',
-        type: 'bar',
-        data: statistics.value.shop_most_city.map((item, index) => ({
-          value: item.shop_count,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initShopMostStateChart = () => {
-  const chartDom = document.getElementById('shop_most_state');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#6e8734', '#eea079', '#f57e91'];
-  const option = {
-    title: {
-      text: '商户最多的前五个州'
-    },
-    tooltip: {},
-    legend: {
-      data: ['商户数量'],
-      itemStyle: {
-        color: '#f5c386',
-      }
-    },
-    xAxis: {
-      data: statistics.value.shop_most_state.map(item => item.state)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '商户数量',
-        type: 'bar',
-        data: statistics.value.shop_most_state.map((item, index) => ({
-          value: item.shop_count,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-// 最常见商户及其评均评分
-const initCommonWithRateChart = () => {
-  const chartDom = document.getElementById('common_with_rate');
-  const myChart = echarts.init(chartDom);
-  const colors = ['#fa8d55', '#f3e4cf', '#b1c69f'];
-  const option = {
-    title: {
-      text: '最常见商户及其平均评分'
-    },
-    tooltip: {},
-    legend: {
-      data: ['平均评分'],
-      itemStyle: {
-        color: '#f5c386',
-      }
-    },
-    xAxis: {
-      data: statistics.value.common_with_rate.map(item => item.name)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '平均评分',
-        type: 'bar',
-        data: statistics.value.common_with_rate.map((item, index) => ({
-          value: item.avg_stars,
-          itemStyle: {
-            color: colors[index % colors.length]
-          }
-        })),
-        label: {
-          show: true,
-          position: 'top',
-          formatter: function (params) {
-            return params.value.toFixed(2); // 显示2位小数
-          }
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initStarsHighCityChart = () => {
-  const chartDom = document.getElementById('stars_high_city');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '评分最高的城市'
-    },
-    tooltip: {},
-    legend: {
-      data: ['平均评分']
-    },
-    xAxis: {
-      data: statistics.value.stars_high_city.map(item => item.city)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '平均评分',
-        type: 'bar',
-        data: statistics.value.stars_high_city.map(item => item.average_stars),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#d4a373'},
-            {offset: 1, color: '#a6a6a6'}
-          ])
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initMostStarsChart = () => {
-  const chartDom = document.getElementById('most_stars');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '收获五星评论最多的商户'
-    },
-    tooltip: {},
-    legend: {
-      data: ['五星评论数量']
-    },
-    xAxis: {
-      data: statistics.value.most_stars.map(item => item.business_id)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '五星评论数量',
-        type: 'bar',
-        data: statistics.value.most_stars.map(item => item.five_stars_counts),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#f4f4f9'},
-            {offset: 1, color: '#e0e0e0'}
-          ])
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initReviewInYearChart = () => {
-  const chartDom = document.getElementById('review_in_year');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '每年的评论数'
-    },
-    tooltip: {},
-    legend: {
-      data: ['评论数']
-    },
-    xAxis: {
-      data: statistics.value.review_in_year.map(item => item.year)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '评论数',
-        type: 'line',
-        data: statistics.value.review_in_year.map(item => item.review_count),
-        itemStyle: {
-          color: '#b8daff'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initBusinessCheckinRankingChart = () => {
-  const chartDom = document.getElementById('business_checkin_ranking');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '商家打卡数排序'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.business_checkin_ranking.map(item => item.name)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'bar',
-        data: statistics.value.business_checkin_ranking.map(item => item.total_checkins),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#f0e1d2'},
-            {offset: 1, color: '#b8daff'}
-          ])
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCityCheckinRankingChart = () => {
-  const chartDom = document.getElementById('city_checkin_ranking');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '最喜欢打卡的城市'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.city_checkin_ranking.map(item => item.city)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'bar',
-        data: statistics.value.city_checkin_ranking.map(item => item.total_checkins),
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {offset: 0, color: '#a6a6a6'},
-            {offset: 1, color: '#d4a373'}
-          ])
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCheckinPerHourChart = () => {
-  const chartDom = document.getElementById('checkin_per_hour');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '每小时打卡数'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.checkin_per_hour.map(item => item.hour)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'line',
-        data: statistics.value.checkin_per_hour.map(item => item.checkin_count),
-        itemStyle: {
-          color: '#f4f4f9'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initCheckinPerYearChart = () => {
-  const chartDom = document.getElementById('checkin_per_year');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '每年打卡数'
-    },
-    tooltip: {},
-    legend: {
-      data: ['打卡数']
-    },
-    xAxis: {
-      data: statistics.value.checkin_per_year.map(item => item.year)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '打卡数',
-        type: 'line',
-        data: statistics.value.checkin_per_year.map(item => item.checkin_count),
-        itemStyle: {
-          color: '#e0e0e0'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
-};
-
-const initEliteUserPercentChart = () => {
-  const chartDom = document.getElementById('elite_user_percent');
-  const myChart = echarts.init(chartDom);
-  const option = {
-    title: {
-      text: '精英用户比'
-    },
-    tooltip: {},
-    legend: {
-      data: ['精英用户比']
-    },
-    xAxis: {
-      data: statistics.value.elite_user_percent.map(item => item.year)
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '精英用户比',
-        type: 'line',
-        data: statistics.value.elite_user_percent.map(item => item.ratio),
-        itemStyle: {
-          color: '#b8daff'
-        }
-      }
-    ]
-  };
-  myChart.setOption(option);
 };
 </script>
-
-<template>
-
-</template>
