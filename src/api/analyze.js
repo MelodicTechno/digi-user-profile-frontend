@@ -65,3 +65,23 @@ export const getReviewRecommendations = (userId) => {
 export const testApi = () => {
     return request.get(API_URL+ '/for_test/');
 };
+
+// 更新评论数据
+export const updateReviewStatistics = () => {
+    return request.get(API_URL + '/update_review_statistics/');
+};
+
+// 获取评论数据统计
+export const getReviewStatistics = () => {
+    return request.get(API_URL + '/get_review_statistics/');
+};
+
+// 更新打卡数据
+export const updateCheckinStatistics = () => {
+    return request.get(API_URL + '/update_checkin_statistics/');
+};
+
+// 获取打卡数据
+export const getCheckinStatistics = () => {
+    return request.get(API_URL + '/get_checkin_statistics/');
+};

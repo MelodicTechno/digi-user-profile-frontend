@@ -61,7 +61,7 @@ const initStarsDistributionChart = () => {
         type: 'bar',
         data: statistics.value.stars_dist.map(item => item.review_count),
         itemStyle: {
-          color: '#515792'
+          color: '#e48593'
         }
       }
     ]
@@ -90,7 +90,7 @@ const initReviewInWeekChart = () => {
         type: 'line',
         data: statistics.value.review_in_week.map(item => item.review_count),
         itemStyle: {
-          color: '#325d71'
+          color: '#a4c7d2'
         }
       }
     ]
@@ -110,7 +110,7 @@ const initTop5BusinessesChart = () => {
       data: ['5星评价数量']
     },
     xAxis: {
-      data: statistics.value.top5_businesses.map(item => item.business_id)
+      data: statistics.value.top5_businesses.map(item => item.name)
     },
     yAxis: {},
     series: [
@@ -119,7 +119,7 @@ const initTop5BusinessesChart = () => {
         type: 'bar',
         data: statistics.value.top5_businesses.map(item => item.five_star_count),
         itemStyle: {
-          color: '#bf6f87'
+          color: '#a1a747'
         }
       }
     ]
