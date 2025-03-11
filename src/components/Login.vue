@@ -28,8 +28,8 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import {useUserStore} from '@/stores/userStore'; // 引入 user store
+import { ref } from 'vue';
+import { useUserStore } from '@/stores/userStore'; // 引入 user store
 import router from "@/router/index.js";
 
 // 定义登录表单数据
@@ -44,7 +44,7 @@ const userStore = useUserStore();
 const handleSubmit = () => {
   console.log('loginData:', loginData.value); // 输出当前的登录数据
 
-  // 存储用户 ID 到 user store
+  // 存储用户信息到 user store
   userStore.setUserInfo({userid: loginData.value.userid});
 
   // 跳转到指定页面
