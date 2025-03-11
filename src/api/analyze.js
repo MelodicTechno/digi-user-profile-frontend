@@ -85,3 +85,13 @@ export const updateCheckinStatistics = () => {
 export const getCheckinStatistics = () => {
     return request.get(API_URL + '/get_checkin_statistics/');
 };
+
+// 获取分词数据
+export const getWordCloudData = () => {
+    return request.get(API_URL + '/get_wordcloud_data/');
+};
+
+// 更新分词数据
+export const updateWordCloudData = () => {
+    return request.get(API_URL + '/update_wordcloud_data/');
+};

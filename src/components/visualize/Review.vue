@@ -1,16 +1,23 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getReviewStatistics, updateReviewStatistics } from '@/api/analyze.js';
+import { getReviewStatistics, updateReviewStatistics, getWordCloudData } from '@/api/analyze.js';
 import * as echarts from 'echarts';
+import 'echarts-wordcloud';
 
 const statistics = ref(null);
+const wordCloudData = ref(null);
 
 onMounted(async () => {
   try {
     const response = await getReviewStatistics();
     statistics.value = response;
     console.log('Review Statistics:', response);
+    const wordCloudResponse = await getWordCloudData();
+    wordCloudData.value = wordCloudResponse.word_frequencies;
+    console.log('Word Cloud Data:', wordCloudData);
+
     initEcharts();
+    initWordCloud();
   } catch (error) {
     console.error('Failed to fetch review statistics:', error);
   }
@@ -163,6 +170,43 @@ const initGraphChart = () => {
   };
   myChart.setOption(option);
 };
+
+const initWordCloud = () => {
+  if (!wordCloudData.value) return;
+
+  const chartDom = document.getElementById('word_cloud');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    series: [{
+      type: 'wordCloud',
+      shape: 'circle',
+      gridSize: 2,
+      sizeRange: [12, 60],
+      rotationRange: [-90, 90],
+      rotationStep: 45,
+      textStyle: {
+        normal: {
+          color: function () {
+            return 'rgb(' + [
+              Math.round(Math.random() * 160),
+              Math.round(Math.random() * 160),
+              Math.round(Math.random() * 160)
+            ].join(',') + ')';
+          }
+        },
+        emphasis: {
+          shadowBlur: 10,
+          shadowColor: '#333'
+        }
+      },
+      data: wordCloudData.value.map(item => ({
+        name: item.word,
+        value: item.count
+      }))
+    }]
+  };
+  myChart.setOption(option);
+};
 </script>
 
 <template>
@@ -171,9 +215,11 @@ const initGraphChart = () => {
     <div id="user_review_count" style="width: 600px;height:400px;"></div>
     <div id="top_words" style="width: 600px;height:400px;"></div>
     <div id="graph" style="width: 600px;height:400px;"></div>
+    <div id="word_cloud" style="width: 600px;height:400px;"></div>
   </div>
   <div class="flex justify-center">
-    <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
+    <button @click="updateData"
+            class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
       更新评论数据
     </button>
   </div>
