@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getUserStatistics, updateUserStatistics } from '@/api/analyze.js';
+import { getUserStatistics, updateUserStatistics} from '@/api/analyze.js';
 import * as echarts from 'echarts';
 
 const userStatistics = ref(null);
@@ -41,6 +41,7 @@ const initUserEcharts = () => {
   // initUserEveryYearChart();
   initReviewCountYearChart();
   initTotalAndSilentChart();
+  initEliteUserPercentChart();
 };
 
 const initNewUserEveryYearChart = () => {
@@ -224,6 +225,35 @@ const initTotalAndSilentChart = () => {
   };
   myChart.setOption(option);
 };
+
+const initEliteUserPercentChart = () => {
+  const chartDom = document.getElementById('elite_user_percent');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '精英用户比'
+    },
+    tooltip: {},
+    legend: {
+      data: ['精英用户比']
+    },
+    xAxis: {
+      data: userStatistics.value.elite_user_percent.map(item => item.year)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '精英用户比',
+        type: 'line',
+        data: userStatistics.value.elite_user_percent.map(item => item.ratio),
+        itemStyle: {
+          color: '#e4a5b3'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
 </script>
 
 <template>
@@ -234,6 +264,7 @@ const initTotalAndSilentChart = () => {
     <!-- <div id="user_every_year" style="width: 600px;height:400px;"></div> -->
     <div id="review_count_year" style="width: 600px;height:400px;"></div>
     <div id="total_and_silent" style="width: 600px;height:400px;"></div>
+    <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
   </div>
   <div class="flex justify-center">
     <button @click="updateUserData"

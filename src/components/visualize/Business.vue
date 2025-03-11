@@ -41,8 +41,8 @@ const initEcharts = () => {
   initCommonWithRateChart();
   initStarsHighCityChart();
   initMostStarsChart();
-  initReviewInYearChart();
-  initEliteUserPercentChart();
+  // initReviewInYearChart();
+  // initEliteUserPercentChart();
 };
 
 const initMostCommonShopChart = () => {
@@ -351,7 +351,7 @@ const initEliteUserPercentChart = () => {
     <div id="stars_high_city" style="width: 600px;height:400px;"></div>
     <div id="most_stars" style="width: 600px;height:400px;"></div>
     <div id="review_in_year" style="width: 600px;height:400px;"></div>
-    <div id="elite_user_percent" style="width: 600px;height:400px;"></div>
+    <!-- <div id="elite_user_percent" style="width: 600px;height:400px;"></div> -->
   </div>
   <div class="flex justify-center">
     <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">
