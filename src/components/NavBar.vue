@@ -10,7 +10,7 @@
       </button>
       <div class="flex items-center space-x-2 cursor-pointer" @click="goToUserPage">
         <img class="w-8 h-8 rounded-full object-cover" :src="userAvatar" alt="用户头像"/>
-        <span class="text-sm text-gray-700">拉普兰德</span>
+        <span class="text-sm text-gray-700">{{ userInfo.username }}</span> <!-- 使用 userInfo.username -->
       </div>
     </div>
   </nav>
@@ -22,6 +22,9 @@ import { useUserStore } from '@/stores/userStore';
 
 const userStore = useUserStore();
 const router = useRouter();
+
+// 用户信息
+const userInfo = userStore.userInfo;
 
 // 用户头像链接
 const userAvatar = 'https://ihs-hmleadernews.oss-cn-shanghai.aliyuncs.com/efd8c111-dc4a-4db7-941b-2257cecb1687.jpg';
