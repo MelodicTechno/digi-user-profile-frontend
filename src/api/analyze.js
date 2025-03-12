@@ -11,6 +11,19 @@ export const getStatistics = () => {
     return request.get(API_URL+ '/get_statistics/');
 };
 
+// 获取餐厅数量
+export const getRestaurantCountStatistics = () => {
+    return request.get(API_URL+ '/get_restaurantCount_statistics/');
+};
+// 更新餐厅数据
+export const updateRestaurantCountStatistics = () => {
+    return request.get(API_URL+ '/update_restaurantCount_statistics/');
+};
+// 好友推荐
+export const friendRecommend = () => {
+    return request.get(API_URL+ '/update_restaurantCount_statistics/');
+}
+
 // 获得商户的数据统计
 export const getBusinessStatistics = () => {
     return request.get(API_URL+ '/get_business_statistics/');
@@ -95,3 +108,13 @@ export const getWordCloudData = () => {
 export const updateWordCloudData = () => {
     return request.get(API_URL + '/update_wordcloud_data/');
 };
+
+// 更新巨他妈难的那个表
+export const updateYearlyStatistics = () => {
+    return request.get(API_URL + '/update_yearly_statistics/');
+}
+
+// 获得巨他妈难的那个表
+export const getYearlyStatistics = () => {
+    return request.get(API_URL + '/get_yearly_statistics/');
+}
