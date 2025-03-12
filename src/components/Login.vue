@@ -1,10 +1,13 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+  <div class="min-h-screen flex items-center justify-center bg-gray-100 relative">
+    <div class="absolute top-0 left-0 w-full h-1/2">
+      <img src="../assets/images/top-view-tasty-meaty-soup-with-potatoes-dark-desk.jpg" alt="bkg" class="w-full h-full object-cover" />
+    </div>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
       <h2 class="text-2xl font-bold mb-6 text-center">登录</h2>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
-          <label for="username" class="block text-sm font-medium text-gray-700">用户名</label>
+          <label for="username" class="block text-sm font-medium text-gray-700">用户ID</label>
           <input
               type="text"
               id="username"
@@ -28,8 +31,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useUserStore } from '@/stores/userStore'; // 引入 user store
+import {ref} from 'vue';
+import {useUserStore} from '@/stores/userStore'; // 引入 user store
 import router from "@/router/index.js";
 
 // 定义登录表单数据
