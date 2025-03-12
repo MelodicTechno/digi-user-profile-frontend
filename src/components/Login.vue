@@ -16,6 +16,16 @@
               required
           />
         </div>
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-700">用户名</label>
+          <input
+              type="text"
+              id="username"
+              v-model="loginData.username"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              required
+          />
+        </div>
 
         <div>
           <button
@@ -31,13 +41,14 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import {useUserStore} from '@/stores/userStore'; // 引入 user store
+import { ref } from 'vue';
+import { useUserStore } from '@/stores/userStore'; // 引入 user store
 import router from "@/router/index.js";
 
 // 定义登录表单数据
 const loginData = ref({
   userid: '',
+  username: '' // 添加用户名字段
 });
 
 // 获取 user store
@@ -48,7 +59,10 @@ const handleSubmit = () => {
   console.log('loginData:', loginData.value); // 输出当前的登录数据
 
   // 存储用户信息到 user store
-  userStore.setUserInfo({userid: loginData.value.userid});
+  userStore.setUserInfo({
+    userid: loginData.value.userid,
+    username: loginData.value.username // 保存用户名
+  });
 
   // 跳转到指定页面
   router.push('/visualize/business');
