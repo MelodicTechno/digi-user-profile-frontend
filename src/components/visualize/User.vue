@@ -478,7 +478,7 @@ const initYearlyCheckinCountChart = () => {
     </button>
   </div>
 
-  <!-- 卡片容器 -->
+  <!-- 每年的统计数据表格卡片 -->
   <div class="ml-8 mt-8 mr-8 mb-8 bg-white shadow-md rounded-lg p-6">
     <h2 class="text-2xl font-bold mb-4">每年的统计数据表格</h2>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -493,7 +493,7 @@ const initYearlyCheckinCountChart = () => {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="stat in yearlyStatistics" :key="stat.year" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+      <tr v-for="stat in yearlyStatistics" :key="stat.year" class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
         <td class="px-6 py-4">{{ stat.year }}</td>
         <td class="px-6 py-4">{{ stat.new_users }}</td>
         <td class="px-6 py-4">{{ stat.review_count }}</td>
@@ -503,8 +503,11 @@ const initYearlyCheckinCountChart = () => {
       </tr>
       </tbody>
     </table>
+  </div>
 
-    <div class="mt-8">
+  <!-- 洞察分析和执行时间卡片 -->
+  <div class="ml-8 mt-8 mr-8 mb-8 bg-white shadow-md rounded-lg p-6">
+    <div>
       <h2 class="text-2xl font-bold mb-4">洞察分析</h2>
       <p class="text-gray-700 dark:text-gray-400">
         从每年的统计数据可以看出，新用户数和评论数逐年增加，表明平台的活跃度和用户参与度在不断提高。精英用户数的增长也反映了平台对高质量用户的吸引力。Tip 数和打卡数的增长则表明用户之间的互动和参与度也在增加。
