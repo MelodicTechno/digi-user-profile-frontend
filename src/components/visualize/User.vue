@@ -463,8 +463,7 @@ const initYearlyCheckinCountChart = () => {
     </button>
   </div>
 
-
-<!--  一坨-->
+  <!-- 一坨 -->
   <div class="ml-8 mt-8 grid grid-cols-2 gap-4">
     <div id="yearly_new_users" style="width: 600px;height:400px;"></div>
     <div id="yearly_review_count" style="width: 600px;height:400px;"></div>
@@ -478,7 +477,9 @@ const initYearlyCheckinCountChart = () => {
       更新每年的统计数据
     </button>
   </div>
-  <div class="ml-8 mt-8">
+
+  <!-- 卡片容器 -->
+  <div class="ml-8 mt-8 mr-8 mb-8 bg-white shadow-md rounded-lg p-6">
     <h2 class="text-2xl font-bold mb-4">每年的统计数据表格</h2>
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -502,17 +503,19 @@ const initYearlyCheckinCountChart = () => {
       </tr>
       </tbody>
     </table>
-  </div>
-  <div class="ml-8 mt-8">
-    <h2 class="text-2xl font-bold mb-4">洞察分析</h2>
-    <p class="text-gray-700 dark:text-gray-400">
-      从每年的统计数据可以看出，新用户数和评论数逐年增加，表明平台的活跃度和用户参与度在不断提高。精英用户数的增长也反映了平台对高质量用户的吸引力。Tip 数和打卡数的增长则表明用户之间的互动和参与度也在增加。
-    </p>
-  </div>
-  <div class="ml-8 mt-8">
-    <h2 class="text-2xl font-bold mb-4">执行时间</h2>
-    <p class="text-gray-700 dark:text-gray-400">
-      数据加载和处理的执行时间为：{{ executionTime }}
-    </p>
+
+    <div class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">洞察分析</h2>
+      <p class="text-gray-700 dark:text-gray-400">
+        从每年的统计数据可以看出，新用户数和评论数逐年增加，表明平台的活跃度和用户参与度在不断提高。精英用户数的增长也反映了平台对高质量用户的吸引力。Tip 数和打卡数的增长则表明用户之间的互动和参与度也在增加。
+      </p>
+    </div>
+
+    <div class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">执行时间</h2>
+      <p class="text-gray-700 dark:text-gray-400">
+        数据加载和处理的执行时间为：{{ executionTime }}
+      </p>
+    </div>
   </div>
 </template>
