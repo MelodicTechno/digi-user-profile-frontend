@@ -8,7 +8,7 @@ const rankingData = ref(null);
 onMounted(async () => {
   try {
     const response = await getBusinessRanking();
-    rankingData.value = response;
+    rankingData.value = response.business_ranking;
     console.log('Business Ranking:', response);
     initEcharts();
   } catch (error) {
@@ -34,44 +34,111 @@ const updateData = async () => {
 const initEcharts = () => {
   if (!rankingData.value) return;
 
-  // 初始化所有图表
-  initTop5BusinessesChart();
-};
-
-
-const initTop5BusinessesChart = () => {
-  const chartDom = document.getElementById('top5_businesses');
+  const chartDom = document.getElementById('business_ranking');
   const myChart = echarts.init(chartDom);
+
   const option = {
     title: {
-      text: '评分最高的前5个商家'
+      text: '每个城市最好（评分次数、评分、打卡数）的五家商家'
     },
-    tooltip: {},
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
     legend: {
-      data: ['评分']
+      data: ['评分', '总签到次数', '评论数量', '排名']
     },
     xAxis: {
+      type: 'category',
       data: rankingData.value.map(item => item.name)
     },
-    yAxis: {},
+    yAxis: [
+      {
+        name: '评分',
+        type: 'value',
+        min: 0,
+        max: 5,
+        position: 'left',
+        axisLabel: {
+          formatter: '{value}'
+        }
+      },
+      {
+        name: '总签到次数',
+        type: 'value',
+        position: 'right',
+        axisLabel: {
+          formatter: '{value}'
+        }
+      },
+      {
+        name: '评论数量',
+        type: 'value',
+        position: 'right',
+        offset: 80,
+        axisLabel: {
+          formatter: '{value}'
+        }
+      },
+      {
+        name: '排名',
+        type: 'value',
+        position: 'right',
+        offset: 160,
+        axisLabel: {
+          formatter: '{value}'
+        }
+      }
+    ],
     series: [
       {
         name: '评分',
         type: 'bar',
+        yAxisIndex: 0,
         data: rankingData.value.map(item => item.stars),
         itemStyle: {
+          color: '#e48593'
+        }
+      },
+      {
+        name: '总签到次数',
+        type: 'bar',
+        yAxisIndex: 1,
+        data: rankingData.value.map(item => item.total_checkins),
+        itemStyle: {
+          color: '#a4c7d2'
+        }
+      },
+      {
+        name: '评论数量',
+        type: 'bar',
+        yAxisIndex: 2,
+        data: rankingData.value.map(item => item.review_count),
+        itemStyle: {
           color: '#a1a747'
+        }
+      },
+      {
+        name: '排名',
+        type: 'line',
+        yAxisIndex: 3,
+        data: rankingData.value.map(item => item.rank),
+        itemStyle: {
+          color: '#f5c386'
         }
       }
     ]
   };
+
   myChart.setOption(option);
 };
 </script>
 
 <template>
-  <div class="ml-8 mt-8 grid grid-cols-2 gap-4">
-    <div id="top5_businesses" style="width: 600px;height:400px;"></div>
+  <div class="ml-8 mt-8">
+    <div id="business_ranking" style="width: 1200px;height:600px;"></div>
   </div>
   <div class="flex justify-center">
     <button @click="updateData" class="mb-6 w-52 bg-[#f5c386] hover:bg-[#f5c386d9] text-white font-bold py-2 px-4 rounded !important">

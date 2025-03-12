@@ -46,13 +46,14 @@
       </router-link>
 
       <router-link
-          to="/portrait"
+          to="/visualize/general"
           class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
-          :class="{ 'bg-blue-100 border-l-4 border-blue-500': currentMenu === '/portrait' }"
+          :class="{ 'bg-blue-100 border-l-4 border-blue-500': currentMenu === '/visualize/general' }"
       >
         <i class="fas fa-user-chart text-lg text-gray-600"></i>
-        <span class="text-gray-700">商户分析参考</span>
+        <span class="text-gray-700">综合分析</span>
       </router-link>
+
       <router-link
           to="/business"
           class="block mb-4 px-6 py-3 flex items-center space-x-3 hover:bg-gray-100"
