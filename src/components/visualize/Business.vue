@@ -296,25 +296,25 @@ const initMostStarsChart = () => {
 };
 
 const initCategoriesMost = () => {
-  const chartDom = document.getElementById('review_in_year');
+  const chartDom = document.getElementById('top_category');
   const myChart = echarts.init(chartDom);
   const option = {
     title: {
-      text: '每年的评论数'
+      text: '餐厅种类前10'
     },
     tooltip: {},
     legend: {
-      data: ['评论数']
+      data: ['商户数量']
     },
     xAxis: {
-      data: statistics.value.review_in_year.map(item => item.year)
+      data: statistics2.value.top_category.map(item => item.category)
     },
     yAxis: {},
     series: [
       {
-        name: '评论数',
+        name: '商户数量',
         type: 'line',
-        data: statistics.value.review_in_year.map(item => item.review_count),
+        data: statistics2.value.top_category.map(item => item.count),
         itemStyle: {
           color: '#515792'
         }
@@ -557,7 +557,8 @@ const initRestaurantPieChart3 = () => {
     <div id="common_with_rate" style="width: 600px;height:400px;"></div>
     <div id="stars_high_city" style="width: 600px;height:400px;"></div>
     <div id="most_stars" style="width: 600px;height:400px;"></div>
-    <div id="review_in_year" style="width: 600px;height:400px;"></div>
+    <div id="top_category" style="width: 600px;height:400px;"></div>
+    <!-- <div id="review_in_year" style="width: 600px;height:400px;"></div> -->
     <div id="restaurant_pie_chart" style="width: 600px;height:400px;"></div>
     <div id="restaurant_pie_chart2" style="width: 600px;height:400px;"></div>
     <div id="restaurant_pie_chart3_Chinese" style="width: 600px;height:400px;"></div>
