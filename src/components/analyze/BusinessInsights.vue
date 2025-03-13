@@ -44,7 +44,7 @@
               ? 'bg-blue-100 text-blue-800'
               : 'bg-slate-200 text-slate-700'"
           >
-            {{ value ? '已达标' : '待优化' }}
+            {{ value ? '已达标' : '可优化' }}
           </span>
         </div>
 

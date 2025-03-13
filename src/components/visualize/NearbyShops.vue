@@ -23,7 +23,7 @@
             @click="updateShopsByLocation"
             class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         >
-          确定位置
+          {{ isLoading ? '查询中...' : '确定' }}
         </button>
         <button
             @click="showMap = !showMap"
@@ -50,37 +50,40 @@
             />
             <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
           </div>
-          <select
-              v-model="sortBy"
-              class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-          >
-            <option value="distance">距离排序</option>
-            <option value="rating">好评优先</option>
-            <option value="reviewCount">人气最高</option>
-          </select>
         </div>
       </div>
 
-      <div class="grid grid-cols-3 gap-6">
+      <div class="space-y-4">
         <div
-            v-for="(shop, index) in sortedShops"
+            v-for="(shop, index) in shops"
             :key="index"
-            class="border rounded-lg overflow-hidden"
+            class="border border-gray-300 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+            @click="goToBusinessDetail(shop.business_id)">
         >
-          <img :src="shop.image" class="w-full h-48 object-cover" :alt="shop.name" />
-          <div class="p-4">
-            <h4 class="font-medium mb-2">{{ shop.name }}</h4>
-            <div class="flex items-center text-sm text-gray-500 mb-2">
-              <i class="fas fa-map-marker-alt mr-2"></i>
-              <span>{{ shop.distance }}</span>
-            </div>
-            <div class="flex items-center text-sm">
-              <div class="text-yellow-400">
-                <i class="fas fa-star"></i>
-                <span class="ml-1">{{ shop.rating }}</span>
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-medium text-lg">{{ shop.name }}</h4>
+              <div class="flex items-center mt-2 space-x-4 text-sm text-gray-600">
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt mr-1.5"></i>
+                  <span>距您 {{ formatDistance(shop.distance) }}</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-star text-yellow-400"></i>
+                  <span class="ml-1.5">{{ shop.stars }}星</span>
+                </div>
+                <div>
+                  <span class="text-blue-500">{{ shop.review_count }}条点评</span>
+                </div>
               </div>
-              <span class="mx-2 text-gray-300">|</span>
-              <span class="text-gray-500">{{ shop.reviewCount }}条点评</span>
+            </div>
+            <div class="flex items-center space-x-4 text-sm">
+              <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full">
+                营业中
+              </div>
+<!--              <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm">-->
+<!--                查看详情-->
+<!--              </button>-->
             </div>
           </div>
         </div>
@@ -90,130 +93,47 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import axios from "axios";
-import {sendLocationToBackendService} from "@/api/recommend.js";
+import { ref } from 'vue';
+import { sendLocationToBackendService } from "@/api/recommend.js";
+import { useRouter } from 'vue-router';
+import {useBusinessStore} from "@/stores/businessStore.js"; // 添加路由导入
 
-// 商家数据（模拟）
-const nearbyShops = ref([
-  {
-    name: '青花瓷餐厅',
-    distance: '500m',
-    rating: 4.8,
-    reviewCount: 1289,
-    image: 'https://ai-public.mastergo.com/ai/img_res/24325bbf1e438954dc90ce759d0a6b9f.jpg',
-  },
-  {
-    name: '悦茶空间',
-    distance: '800m',
-    rating: 4.6,
-    reviewCount: 865,
-    image: 'https://example.com/image2.jpg',
-  },
-  {
-    name: '星光咖啡',
-    distance: '1.2km',
-    rating: 4.7,
-    reviewCount: 756,
-    image: 'https://example.com/image3.jpg',
-  },
-]);
 
-// 经纬度输入
-const latitude = ref(null);
-const longitude = ref(null);
-
-// 排序方式
-const sortBy = ref('distance');
-
-// 是否显示地图
+const latitude = ref('');
+const longitude = ref('');
+const isLoading = ref(false);
+const shops = ref([]);
 const showMap = ref(false);
+const router = useRouter(); // 获取路由实例
 
-// 地图实例
-let map;
-
-// 初始化地图
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 37.0902, lng: -95.7129 }, // 美国中心位置
-    zoom: 4, // 缩放级别
-  });
-
-  // 地图点击事件
-  map.addListener('click', (event) => {
-    latitude.value = event.latLng.lat().toFixed(6);
-    longitude.value = event.latLng.lng().toFixed(6);
-  });
-}
-
-// 根据经纬度更新商家列表并发送到后端
-function updateShopsByLocation() {
-  if (latitude.value && longitude.value) {
-    // 模拟根据经纬度更新商家数据
-    nearbyShops.value = [
-      {
-        name: '青花瓷餐厅',
-        distance: '500m',
-        rating: 4.8,
-        reviewCount: 1289,
-        image: 'https://example.com/image1.jpg',
-      },
-      {
-        name: '悦茶空间',
-        distance: '800m',
-        rating: 4.6,
-        reviewCount: 865,
-        image: 'https://example.com/image2.jpg',
-      },
-      {
-        name: '星光咖啡',
-        distance: '1.2km',
-        rating: 4.7,
-        reviewCount: 756,
-        image: 'https://example.com/image3.jpg',
-      },
-    ];
-
-    // 将经纬度数据发送到后端
-    sendLocationToBackend(latitude.value, longitude.value);
-  } else {
-    alert('请输入有效的经纬度');
-  }
-}
-
-// 定义一个异步函数
-const sendLocationToBackend = async (latitude,longitude) => {
-  try {
-    // 调用异步服务函数并等待结果
-    const res = await sendLocationToBackendService(latitude, longitude);
-    console.log(res); // 打印返回的数据
-  } catch (error) {
-    console.error('请求失败:', error); // 捕获并处理错误
-  }
+// 添加跳转方法
+const goToBusinessDetail = (businessId) => {
+  const businessStore = useBusinessStore();
+  businessStore.setBusinessId(businessId);
+  router.push(`/business_info`);
 };
 
-// 排序后的商家列表
-const sortedShops = computed(() => {
-  return [...nearbyShops.value].sort((a, b) => {
-    if (sortBy.value === 'distance') {
-      return parseFloat(a.distance) - parseFloat(b.distance);
-    } else if (sortBy.value === 'rating') {
-      return b.rating - a.rating;
-    } else if (sortBy.value === 'reviewCount') {
-      return b.reviewCount - a.reviewCount;
-    }
-    return 0;
-  });
-});
-
-// 监听 showMap 变化，初始化地图
-onMounted(() => {
-  if (showMap.value) {
-    initMap();
+const updateShopsByLocation = async () => {
+  if (!latitude.value.trim() || !longitude.value.trim()) return;
+  try {
+    isLoading.value = true;
+    const response = await sendLocationToBackendService(
+        latitude.value.trim(),
+        longitude.value.trim()
+    );
+    shops.value = response;
+  } finally {
+    isLoading.value = false;
   }
-});
+};
+const formatDistance = (distance) => {
+  if (distance >= 1000) {
+    return `${(distance / 1000).toFixed(1)} 千米`;
+  }
+  return `${Math.round(distance)} 米`;
+};
 </script>
 
 <style scoped>
-/* 样式保持不变 */
+/* 可以添加自定义样式 */
 </style>

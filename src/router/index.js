@@ -13,6 +13,7 @@ import ReviewVisualize from "@/components/visualize/Review.vue";
 import UserVisualize from "@/components/visualize/User.vue";
 import LayoutVue from '@/components/LayoutVue.vue'
 import UserInfo from "@/components/user/UserInfo.vue";
+import BusinessInformation from "@/components/detail/BusinessInformation.vue";
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login,
+    },
+    {
+        path: '/business_info',
+        name: 'BusinessInfo',
+        component: BusinessInformation,
     },
     {
         path: '/', component: LayoutVue, redirect: '/visualize/business', children: [
@@ -69,8 +75,8 @@ const routes = [
             },
             {
                 path: '/business',
-                name: 'BusinessInsights',
-                component: BusinessInsights,
+                name: 'Business',
+                component: BusinessInsights
             },
             {
                 path: '/visualize/nearby',
