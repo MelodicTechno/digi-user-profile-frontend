@@ -135,5 +135,5 @@ export const updateReviewData = () => {
 }
 
 export const getReviewData = () => {
-    return request.get(API_URL + '/get_review_data');
+    return request.get(API_URL + '/get_review_data/');
 }
