@@ -4,6 +4,7 @@
       <img class="w-16 h-16 rounded-full object-cover" :src="userAvatar" alt="用户头像"/>
       <div>
         <h2 class="text-sm text-gray-600">用户ID: {{ userInfo.userid }}</h2>
+        <p class="text-sm text-gray-600">用户名: {{ userInfo.username }}</p> <!-- 添加用户名显示 -->
         <p class="text-sm text-gray-600">用户角色：管理员</p>
       </div>
     </div>

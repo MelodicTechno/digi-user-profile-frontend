@@ -1,17 +1,27 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getReviewStatistics, updateReviewStatistics, getWordCloudData } from '@/api/analyze.js';
+import { getReviewStatistics, updateReviewStatistics, getWordCloudData, updateReviewData, getReviewData } from '@/api/analyze.js';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 
-const statistics = ref(null);
+const combinedData = ref(null);
 const wordCloudData = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await getReviewStatistics();
-    statistics.value = response;
-    console.log('Review Statistics:', response);
+    const [reviewStatistics, reviewData] = await Promise.all([
+      getReviewStatistics(),
+      getReviewData()
+    ]);
+
+    // 合并两个接口的数据
+    combinedData.value = {
+      ...reviewStatistics,
+      ...reviewData
+    };
+
+    console.log('Combined Review Data:', combinedData.value);
+
     const wordCloudResponse = await getWordCloudData();
     wordCloudData.value = wordCloudResponse.word_frequencies;
     console.log('Word Cloud Data:', wordCloudData);
@@ -19,7 +29,7 @@ onMounted(async () => {
     initEcharts();
     initWordCloud();
   } catch (error) {
-    console.error('Failed to fetch review statistics:', error);
+    console.error('Failed to fetch review data:', error);
   }
 });
 
@@ -27,25 +37,37 @@ const updateData = async () => {
   const confirmed = confirm('确定要更新数据吗？');
   if (confirmed) {
     try {
-      const response = await updateReviewStatistics();
+      const [reviewStatistics, reviewData] = await Promise.all([
+        updateReviewStatistics(),
+        // updateReviewData()
+      ]);
+
+      // 合并两个接口的数据
+      combinedData.value = {
+        ...reviewStatistics,
+        ...reviewData
+      };
+
       alert('数据更新成功');
-      statistics.value = response;
       initEcharts();
     } catch (error) {
       alert('数据更新失败');
-      console.error('Failed to update review statistics:', error);
+      console.error('Failed to update review data:', error);
     }
   }
 };
 
 const initEcharts = () => {
-  if (!statistics.value) return;
+  if (!combinedData.value) return;
 
   // 初始化所有图表
   initYearReviewCountChart();
   initUserReviewCountChart();
   initTopWordsChart();
   initGraphChart();
+  initSummaryChart();
+  initPositiveWordsChart();
+  initNegativeWordsChart();
 };
 
 const initYearReviewCountChart = () => {
@@ -60,14 +82,14 @@ const initYearReviewCountChart = () => {
       data: ['评论数量']
     },
     xAxis: {
-      data: statistics.value.year_review_counts.map(item => item.year)
+      data: combinedData.value.year_review_counts.map(item => item.year)
     },
     yAxis: {},
     series: [
       {
         name: '评论数量',
         type: 'bar',
-        data: statistics.value.year_review_counts.map(item => item.review_count),
+        data: combinedData.value.year_review_counts.map(item => item.review_count),
         itemStyle: {
           color: '#515792'
         }
@@ -89,14 +111,14 @@ const initUserReviewCountChart = () => {
       data: ['评论数量']
     },
     xAxis: {
-      data: statistics.value.user_review_counts.map(item => item.name)
+      data: combinedData.value.user_review_counts.map(item => item.name)
     },
     yAxis: {},
     series: [
       {
         name: '评论数量',
         type: 'bar',
-        data: statistics.value.user_review_counts.map(item => item.review_counts),
+        data: combinedData.value.user_review_counts.map(item => item.review_counts),
         itemStyle: {
           color: '#325d71'
         }
@@ -118,14 +140,14 @@ const initTopWordsChart = () => {
       data: ['词频']
     },
     xAxis: {
-      data: statistics.value.top_20_words.map(item => item.word)
+      data: combinedData.value.top_20_words.map(item => item.word)
     },
     yAxis: {},
     series: [
       {
         name: '词频',
         type: 'bar',
-        data: statistics.value.top_20_words.map(item => item.count),
+        data: combinedData.value.top_20_words.map(item => item.count),
         itemStyle: {
           color: '#bf6f87'
         }
@@ -148,7 +170,7 @@ const initGraphChart = () => {
         name: '评论关系',
         type: 'graph',
         layout: 'force',
-        data: statistics.value.graph_data.nodes.map(node => ({
+        data: combinedData.value.graph_data.nodes.map(node => ({
           name: node.name,
           symbolSize: 10,
           itemStyle: {
@@ -157,13 +179,100 @@ const initGraphChart = () => {
             }
           }
         })),
-        links: statistics.value.graph_data.edges.map(edge => ({
+        links: combinedData.value.graph_data.edges.map(edge => ({
           source: edge.source,
           target: edge.target,
           value: edge.value
         })),
         lineStyle: {
           color: '#325d71'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initSummaryChart = () => {
+  const chartDom = document.getElementById('summary');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '评论类型统计'
+    },
+    tooltip: {},
+    legend: {
+      data: combinedData.value.summary.map(item => item.review_type)
+    },
+    xAxis: {
+      data: combinedData.value.summary.map(item => item.review_type)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '数量',
+        type: 'bar',
+        data: combinedData.value.summary.map(item => item.count),
+        itemStyle: {
+          color: '#515792'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initPositiveWordsChart = () => {
+  const chartDom = document.getElementById('positive_words');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '正面评论高频词'
+    },
+    tooltip: {},
+    legend: {
+      data: ['词频']
+    },
+    xAxis: {
+      data: combinedData.value.positive_words.map(item => item.word)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '词频',
+        type: 'bar',
+        data: combinedData.value.positive_words.map(item => item.count),
+        itemStyle: {
+          color: '#325d71'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initNegativeWordsChart = () => {
+  const chartDom = document.getElementById('negative_words');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '负面评论高频词'
+    },
+    tooltip: {},
+    legend: {
+      data: ['词频']
+    },
+    xAxis: {
+      data: combinedData.value.negative_words.map(item => item.word)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '词频',
+        type: 'bar',
+        data: combinedData.value.negative_words.map(item => item.count),
+        itemStyle: {
+          color: '#bf6f87'
         }
       }
     ]
@@ -178,40 +287,42 @@ const initWordCloud = () => {
   const myChart = echarts.init(chartDom);
   const option = {
     title: {
-      text: '评论词云图', // 添加标题
-      left: 'center', // 标题位置
+      text: '评论词云图',
+      left: 'center',
       textStyle: {
-        color: '#333', // 标题颜色
-        fontWeight: 'bold' // 标题字体粗细
+        color: '#333',
+        fontWeight: 'bold'
       }
     },
-    series: [{
-      type: 'wordCloud',
-      shape: 'circle',
-      gridSize: 2,
-      sizeRange: [12, 60],
-      rotationRange: [-90, 90],
-      rotationStep: 45,
-      textStyle: {
-        normal: {
-          color: function () {
-            return 'rgb(' + [
-              Math.round(Math.random() * 160),
-              Math.round(Math.random() * 160),
-              Math.round(Math.random() * 160)
-            ].join(',') + ')';
+    series: [
+      {
+        type: 'wordCloud',
+        shape: 'circle',
+        gridSize: 2,
+        sizeRange: [12, 60],
+        rotationRange: [-90, 90],
+        rotationStep: 45,
+        textStyle: {
+          normal: {
+            color: function () {
+              return 'rgb(' + [
+                Math.round(Math.random() * 160),
+                Math.round(Math.random() * 160),
+                Math.round(Math.random() * 160)
+              ].join(',') + ')';
+            }
+          },
+          emphasis: {
+            shadowBlur: 10,
+            shadowColor: '#333'
           }
         },
-        emphasis: {
-          shadowBlur: 10,
-          shadowColor: '#333'
-        }
-      },
-      data: wordCloudData.value.map(item => ({
-        name: item.word,
-        value: item.count
-      }))
-    }]
+        data: wordCloudData.value.map(item => ({
+          name: item.word,
+          value: item.count
+        }))
+      }
+    ]
   };
   myChart.setOption(option);
 };
@@ -224,6 +335,9 @@ const initWordCloud = () => {
     <div id="top_words" style="width: 600px;height:400px;"></div>
     <div id="graph" style="width: 600px;height:400px;"></div>
     <div id="word_cloud" style="width: 600px;height:400px;"></div>
+    <div id="summary" style="width: 600px;height:400px;"></div>
+    <div id="positive_words" style="width: 600px;height:400px;"></div>
+    <div id="negative_words" style="width: 600px;height:400px;"></div>
   </div>
   <div class="flex justify-center">
     <button @click="updateData"

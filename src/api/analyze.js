@@ -118,3 +118,22 @@ export const updateYearlyStatistics = () => {
 export const getYearlyStatistics = () => {
     return request.get(API_URL + '/get_yearly_statistics/');
 }
+
+// 更新综合图
+export const updateBusinessRanking = () => {
+    return request.get(API_URL + '/update_business_ranking/');
+}
+
+// 获得综合图
+export const getBusinessRanking = () => {
+    return request.get(API_URL + '/get_business_ranking/');
+}
+
+// 评论三张图补做
+export const updateReviewData = () => {
+    return request.get(API_URL + '/update_review_data/');
+}
+
+export const getReviewData = () => {
+    return request.get(API_URL + '/get_review_data/');
+}
