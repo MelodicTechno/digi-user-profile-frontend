@@ -143,3 +143,12 @@ export const updateReviewData = () => {
 export const getReviewData = () => {
     return request.get(API_URL + '/get_review_data/');
 }
+// 导出 API 方法
+export const getAIResponse = (message) => {
+    return request.post(API_URL + '/chat_AI/', { message})
+}
+
+//获取好友推荐
+export const getFriendRecommend = () => {
+    return request.get(API_URL + '/recommend_friend/get_friend/');
+}

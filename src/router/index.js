@@ -14,7 +14,7 @@ import LayoutVue from '@/components/LayoutVue.vue'
 import UserInfo from "@/components/user/UserInfo.vue";
 import BusinessInformation from "@/components/detail/BusinessInformation.vue";
 import PersonalShops from "@/components/visualize/PersonalShops.vue";
-
+import Ai from "@/components/visualize/Ai.vue";
 const routes = [
     {
         path: '/',
@@ -92,6 +92,11 @@ const routes = [
                 path: '/personalization',
                 name: 'Personalization',
                 component: PersonalShops,
+            },
+            {
+                path: '/AI',
+                name: 'AI',
+                component: Ai
             }
         ]
     },
