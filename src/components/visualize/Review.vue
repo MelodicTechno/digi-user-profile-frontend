@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getReviewStatistics, updateReviewStatistics, getWordCloudData, updateReviewData, getReviewData } from '@/api/analyze.js';
+import { getReviewStatistics, updateReviewStatistics, getWordCloudData, getRelationGraph } from '@/api/analyze.js';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 
