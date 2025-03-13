@@ -132,4 +132,14 @@ export const updateBusinessRanking = () => {
 // 获得综合图
 export const getBusinessRanking = () => {
     return request.get(API_URL + '/get_business_ranking/');
+
+}
+
+// 评论三张图补做
+export const updateReviewData = () => {
+    return request.get(API_URL + '/update_review_data/');
+}
+
+export const getReviewData = () => {
+    return request.get(API_URL + '/get_review_data/');
 }
