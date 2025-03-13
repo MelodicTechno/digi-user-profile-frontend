@@ -1,11 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getReviewStatistics, updateReviewStatistics, getWordCloudData, updateReviewData, getReviewData } from '@/api/analyze.js';
+import { getReviewStatistics, updateReviewStatistics, getWordCloudData, updateReviewData, getReviewData,  getRelationGraph} from '@/api/analyze.js';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 
 const statistics = ref(null);
 const wordCloudData = ref(null);
+const relationGraphData = ref(null);
 
 onMounted(async () => {
   try {
@@ -15,6 +16,9 @@ onMounted(async () => {
     const wordCloudResponse = await getWordCloudData();
     wordCloudData.value = wordCloudResponse.word_frequencies;
     console.log('Word Cloud Data:', wordCloudData);
+    const relationGraph = await getRelationGraph();
+    relationGraphData.value = relationGraph;
+    console.log('relationgraph:', relationGraphData);
 
     initEcharts();
     initWordCloud();
@@ -46,9 +50,9 @@ const initEcharts = () => {
   initUserReviewCountChart();
   initTopWordsChart();
   initGraphChart();
-  initSummaryChart();
-  initPositiveWordsChart();
-  initNegativeWordsChart();
+  // initSummaryChart();
+  // initPositiveWordsChart();
+  // initNegativeWordsChart();
 };
 
 const initYearReviewCountChart = () => {
@@ -143,7 +147,12 @@ const initGraphChart = () => {
   const myChart = echarts.init(chartDom);
   const option = {
     title: {
-      text: '评论关系图'
+      text: '评论关系图',
+      left: 'center', // 将标题居中
+      top: 'top', // 将标题向上移动
+      textStyle: {
+        fontSize: 16 // 调整字体大小
+      }
     },
     tooltip: {},
     series: [
@@ -151,7 +160,7 @@ const initGraphChart = () => {
         name: '评论关系',
         type: 'graph',
         layout: 'force',
-        data: statistics.value.graph_data.nodes.map(node => ({
+        data: relationGraphData.value.nodes.map(node => ({
           name: node.name,
           symbolSize: 10,
           itemStyle: {
@@ -160,7 +169,7 @@ const initGraphChart = () => {
             }
           }
         })),
-        links: statistics.value.graph_data.edges.map(edge => ({
+        links: relationGraphData.value.links.map(edge => ({
           source: edge.source,
           target: edge.target,
           value: edge.value
@@ -313,8 +322,8 @@ const initNegativeWordsChart = () => {
     <div id="year_review_count" style="width: 600px;height:400px;"></div>
     <div id="user_review_count" style="width: 600px;height:400px;"></div>
     <div id="top_words" style="width: 600px;height:400px;"></div>
-    <div id="graph" style="width: 600px;height:400px;"></div>
     <div id="word_cloud" style="width: 600px;height:400px;"></div>
+    <div id="graph" style="width: 600px;height:600px;"></div>
     <div id="summary" style="width: 600px;height:400px;"></div>
     <div id="positive_words" style="width: 600px;height:400px;"></div>
     <div id="negative_words" style="width: 600px;height:400px;"></div>
