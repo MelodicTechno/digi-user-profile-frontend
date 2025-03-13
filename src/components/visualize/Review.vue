@@ -50,9 +50,9 @@ const initEcharts = () => {
   initUserReviewCountChart();
   initTopWordsChart();
   initGraphChart();
-  initSummaryChart();
-  initPositiveWordsChart();
-  initNegativeWordsChart();
+  // initSummaryChart();
+  // initPositiveWordsChart();
+  // initNegativeWordsChart();
 };
 
 const initYearReviewCountChart = () => {
@@ -235,6 +235,7 @@ const initWordCloud = () => {
     <div id="user_review_count" style="width: 600px;height:400px;"></div>
     <div id="top_words" style="width: 600px;height:400px;"></div>
     <div id="word_cloud" style="width: 600px;height:400px;"></div>
+    <div id="graph" style="width: 600px;height:400px;"></div>
     <div id="summary" style="width: 600px;height:400px;"></div>
     <div id="positive_words" style="width: 600px;height:400px;"></div>
     <div id="negative_words" style="width: 600px;height:400px;"></div>
