@@ -8,3 +8,8 @@ export const getBusinessdetail = (business_id) => {
 export const getBusinessInformation = (business_id) => {
     return request.get(`${API_URL}/get_business_information/${business_id}/`);
 };
+
+
+export const getPersonaldetail = (business_id) => {
+    return request.get(`${API_URL}/get_rating_recommend/${business_id}/`);
+};

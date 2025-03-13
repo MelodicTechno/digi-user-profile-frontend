@@ -6,31 +6,23 @@
         <div class="relative">
           <input
               type="text"
-              v-model="latitude"
-              placeholder="输入纬度"
-              class="pl-4 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-          />
-        </div>
-        <div class="relative">
-          <input
-              type="text"
-              v-model="longitude"
-              placeholder="输入经度"
+              v-model="userId"
+              placeholder="输入用户id"
               class="pl-4 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
         </div>
         <button
-            @click="updateShopsByLocation"
+            @click="updateShopsByUserId"
             class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
         >
           {{ isLoading ? '查询中...' : '确定' }}
         </button>
-<!--        <button-->
-<!--            @click="showMap = !showMap"-->
-<!--            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"-->
-<!--        >-->
-<!--          地图选点-->
-<!--        </button>-->
+        <!--        <button-->
+        <!--            @click="showMap = !showMap"-->
+        <!--            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"-->
+        <!--        >-->
+        <!--          地图选点-->
+        <!--        </button>-->
       </div>
 
       <!-- 地图容器 -->
@@ -40,7 +32,7 @@
     <!-- 商家列表 -->
     <div class="bg-white p-6 rounded-lg shadow-sm">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-medium">附近热门商家</h3>
+        <h3 class="text-lg font-medium">个性化推荐商家</h3>
         <div class="flex items-center space-x-4">
           <div class="relative">
             <input
@@ -59,15 +51,15 @@
             :key="index"
             class="border border-gray-300 rounded-lg p-4 hover:bg-gray-50 transition-colors"
             @click="goToBusinessDetail(shop.business_id)">
-        >
+          >
           <div class="flex items-center justify-between">
             <div>
               <h4 class="font-medium text-lg">{{ shop.name }}</h4>
               <div class="flex items-center mt-2 space-x-4 text-sm text-gray-600">
-                <div class="flex items-center">
-                  <i class="fas fa-map-marker-alt mr-1.5"></i>
-                  <span>距您 {{ formatDistance(shop.distance) }}</span>
-                </div>
+<!--                <div class="flex items-center">-->
+<!--                  <i class="fas fa-map-marker-alt mr-1.5"></i>-->
+<!--                  <span>距您 {{ formatDistance(shop.distance) }}</span>-->
+<!--                </div>-->
                 <div class="flex items-center">
                   <i class="fas fa-star text-yellow-400"></i>
                   <span class="ml-1.5">{{ shop.stars }}星</span>
@@ -81,9 +73,9 @@
               <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full">
                 营业中
               </div>
-<!--              <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm">-->
-<!--                查看详情-->
-<!--              </button>-->
+              <!--              <button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm">-->
+              <!--                查看详情-->
+              <!--              </button>-->
             </div>
           </div>
         </div>
@@ -95,12 +87,13 @@
 <script setup>
 import { ref } from 'vue';
 import { sendLocationToBackendService } from "@/api/recommend.js";
+import {getBusinessdetail, getPersonaldetail} from "@/api/business.js";
 import { useRouter } from 'vue-router';
 import {useBusinessStore} from "@/stores/businessStore.js"; // 添加路由导入
 
 
-const latitude = ref('');
-const longitude = ref('');
+const userId = ref('');
+
 const isLoading = ref(false);
 const shops = ref([]);
 const showMap = ref(false);
@@ -113,13 +106,12 @@ const goToBusinessDetail = (businessId) => {
   router.push(`/business_info`);
 };
 
-const updateShopsByLocation = async () => {
-  if (!latitude.value.trim() || !longitude.value.trim()) return;
+const updateShopsByUserId = async () => {
+  if (!userId.value.trim()) return;
   try {
     isLoading.value = true;
-    const response = await sendLocationToBackendService(
-        latitude.value.trim(),
-        longitude.value.trim()
+    const response = await getPersonaldetail(
+        userId.value.trim()
     );
     shops.value = response;
   } finally {

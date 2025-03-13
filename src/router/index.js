@@ -14,6 +14,7 @@ import UserVisualize from "@/components/visualize/User.vue";
 import LayoutVue from '@/components/LayoutVue.vue'
 import UserInfo from "@/components/user/UserInfo.vue";
 import BusinessInformation from "@/components/detail/BusinessInformation.vue";
+import PersonalShops from "@/components/visualize/PersonalShops.vue";
 
 const routes = [
     {
@@ -92,6 +93,11 @@ const routes = [
                 path: '/user_info',
                 name: 'UserInfo',
                 component: UserInfo,
+            },
+            {
+                path: '/personalization',
+                name: 'Personalization',
+                component: PersonalShops,
             }
         ]
     },
