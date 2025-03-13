@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getReviewStatistics, updateReviewStatistics, getWordCloudData } from '@/api/analyze.js';
+import { getReviewStatistics, updateReviewStatistics, getWordCloudData, updateReviewData, getReviewData } from '@/api/analyze.js';
 import * as echarts from 'echarts';
 import 'echarts-wordcloud';
 
@@ -46,6 +46,9 @@ const initEcharts = () => {
   initUserReviewCountChart();
   initTopWordsChart();
   initGraphChart();
+  initSummaryChart();
+  initPositiveWordsChart();
+  initNegativeWordsChart();
 };
 
 const initYearReviewCountChart = () => {
@@ -215,6 +218,94 @@ const initWordCloud = () => {
   };
   myChart.setOption(option);
 };
+
+const initSummaryChart = () => {
+  const chartDom = document.getElementById('summary');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '评论类型统计'
+    },
+    tooltip: {},
+    legend: {
+      data: statistics.value.summary.map(item => item.review_type)
+    },
+    xAxis: {
+      data: statistics.value.summary.map(item => item.review_type)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '数量',
+        type: 'bar',
+        data: statistics.value.summary.map(item => item.count),
+        itemStyle: {
+          color: '#515792'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initPositiveWordsChart = () => {
+  const chartDom = document.getElementById('positive_words');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '正面评论高频词'
+    },
+    tooltip: {},
+    legend: {
+      data: ['词频']
+    },
+    xAxis: {
+      data: statistics.value.positive_words.map(item => item.word)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '词频',
+        type: 'bar',
+        data: statistics.value.positive_words.map(item => item.count),
+        itemStyle: {
+          color: '#325d71'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
+const initNegativeWordsChart = () => {
+  const chartDom = document.getElementById('negative_words');
+  const myChart = echarts.init(chartDom);
+  const option = {
+    title: {
+      text: '负面评论高频词'
+    },
+    tooltip: {},
+    legend: {
+      data: ['词频']
+    },
+    xAxis: {
+      data: statistics.value.negative_words.map(item => item.word)
+    },
+    yAxis: {},
+    series: [
+      {
+        name: '词频',
+        type: 'bar',
+        data: statistics.value.negative_words.map(item => item.count),
+        itemStyle: {
+          color: '#bf6f87'
+        }
+      }
+    ]
+  };
+  myChart.setOption(option);
+};
+
 </script>
 
 <template>
@@ -224,6 +315,9 @@ const initWordCloud = () => {
     <div id="top_words" style="width: 600px;height:400px;"></div>
     <div id="graph" style="width: 600px;height:400px;"></div>
     <div id="word_cloud" style="width: 600px;height:400px;"></div>
+    <div id="summary" style="width: 600px;height:400px;"></div>
+    <div id="positive_words" style="width: 600px;height:400px;"></div>
+    <div id="negative_words" style="width: 600px;height:400px;"></div>
   </div>
   <div class="flex justify-center">
     <button @click="updateData"
