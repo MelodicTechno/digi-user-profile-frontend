@@ -166,12 +166,7 @@ const initGraphChart = () => {
   const myChart = echarts.init(chartDom);
   const option = {
     title: {
-      text: '评论关系图',
-      left: 'center', // 将标题居中
-      top: 'top', // 将标题向上移动
-      textStyle: {
-        fontSize: 16 // 调整字体大小
-      }
+      text: '评论关系图'
     },
     tooltip: {},
     series: [
