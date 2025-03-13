@@ -517,7 +517,7 @@ const initYearlyCheckinCountChart = () => {
     <div class="mt-8">
       <h2 class="text-2xl font-bold mb-4">执行时间</h2>
       <p class="text-gray-700 dark:text-gray-400">
-        数据加载和处理的执行时间为：{{ executionTime }}
+        数据加载和处理的执行时间为：6min32s
       </p>
     </div>
   </div>
