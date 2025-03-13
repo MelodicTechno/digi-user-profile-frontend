@@ -1,15 +1,19 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import {getBusinessStatistics, updateBusinessStatistics, updateStatistics,} from '@/api/analyze.js';
+import {getBusinessStatistics, updateBusinessStatistics, updateRestaurantCountStatistics, getRestaurantCountStatistics, updateReviewStatistics} from '@/api/analyze.js';
 import * as echarts from 'echarts';
 
 const statistics = ref(null);
+const statistics2 = ref(null);
 
 onMounted(async () => {
   try {
     const response = await getBusinessStatistics();
+    const response2 = await getRestaurantCountStatistics();
     statistics.value = response;
+    statistics2.value = response2;
     console.log('Statistics:', response);
+    console.log('Statistics2:', response2);
     initEcharts();
   } catch (error) {
     console.error('Failed to fetch statistics:', error);
@@ -20,9 +24,11 @@ const updateData = async () => {
   const confirmed = confirm('确定要更新数据吗？');
   if (confirmed) {
     try {
-      const response = await updateBusinessStatistics();
+      // const response = await updateBusinessStatistics();
+      const response2 = await updateRestaurantCountStatistics();
       alert('数据更新成功');
-      statistics.value = response;
+      // statistics.value = response;
+      statistics2.value =response2
       initEcharts();
     } catch (error) {
       alert('数据更新失败');
@@ -41,6 +47,12 @@ const initEcharts = () => {
   initCommonWithRateChart();
   initStarsHighCityChart();
   initMostStarsChart();
+  initCategoriesMost();
+  initRestaurantPieChart();
+  initRestaurantPieChart2();
+  initRestaurantPieChart3();
+  initRestaurantPieChart4();
+  initRestaurantPieChart5();
   // initReviewInYearChart();
   // initEliteUserPercentChart();
 };
@@ -283,26 +295,26 @@ const initMostStarsChart = () => {
   myChart.setOption(option);
 };
 
-const initReviewInYearChart = () => {
-  const chartDom = document.getElementById('review_in_year');
+const initCategoriesMost = () => {
+  const chartDom = document.getElementById('top_category');
   const myChart = echarts.init(chartDom);
   const option = {
     title: {
-      text: '每年的评论数'
+      text: '餐厅种类前10'
     },
     tooltip: {},
     legend: {
-      data: ['评论数']
+      data: ['商户数量']
     },
     xAxis: {
-      data: statistics.value.review_in_year.map(item => item.year)
+      data: statistics2.value.top_category.map(item => item.category)
     },
     yAxis: {},
     series: [
       {
-        name: '评论数',
+        name: '商户数量',
         type: 'line',
-        data: statistics.value.review_in_year.map(item => item.review_count),
+        data: statistics2.value.top_category.map(item => item.count),
         itemStyle: {
           color: '#515792'
         }
@@ -340,6 +352,201 @@ const initEliteUserPercentChart = () => {
   };
   myChart.setOption(option);
 };
+
+const initRestaurantPieChart = () => {
+  const chartDom = document.getElementById('restaurant_pie_chart');
+  const myChart = echarts.init(chartDom);
+
+  // 颜色数组
+  const colors = ['#6e8734', '#eea079', '#f57e91'];
+
+  // 假设 statistics 是从后端获取的数据
+  // const statistics = {
+  //   restaurant_pie_chart: [
+  //     { type: "isChinese", count: 3343 },
+  //     { type: "isAmerican", count: 13066 },
+  //     { type: "isMexican", count: 4614 }
+  //   ]
+  // };
+
+  // 饼图数据
+  const pieData = statistics2.value.restaurant_pie_chart.map((item, index) => ({
+    value: item.count,
+    name: item.type.replace('is', '').replace(/([A-Z])/g, ' $1').trim(), // 将 "isChinese" 转换为 "Chinese"
+    itemStyle: { color: colors[index % colors.length] }
+  }));
+
+  const option = {
+    title: {
+      text: '餐厅类型数量占比',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      orient: 'vertical',
+      left: 'left',
+      data: pieData.map(item => item.name)
+    },
+    series: [
+      {
+        name: '餐厅类型',
+        type: 'pie',
+        radius: '50%',
+        data: pieData,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+        label: {
+          formatter: '{b}: {c} ({d}%)'
+        }
+      }
+    ]
+  };
+
+  myChart.setOption(option);
+};
+
+const initRestaurantPieChart2 = () => {
+  const chartDom = document.getElementById('restaurant_pie_chart2');
+  const myChart = echarts.init(chartDom);
+
+  // 颜色数组
+  const colors = ['#6e8734', '#eea079', '#f57e91'];
+
+  // 假设 statistics 是从后端获取的数据
+  // const statistics = {
+  //   restaurant_pie_chart: [
+  //     { type: "isChinese", count: 3343 },
+  //     { type: "isAmerican", count: 13066 },
+  //     { type: "isMexican", count: 4614 }
+  //   ]
+  // };
+
+  // 饼图数据
+  const pieData = statistics2.value.restaurant_pie_chart2.map((item, index) => ({
+    value: item.count,
+    name: item.type.replace('is', '').replace(/([A-Z])/g, ' $1').trim(), // 将 "isChinese" 转换为 "Chinese"
+    itemStyle: { color: colors[index % colors.length] }
+  }));
+
+  const option = {
+    title: {
+      text: '餐厅类型数量占比',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      orient: 'vertical',
+      left: 'left',
+      data: pieData.map(item => item.name)
+    },
+    series: [
+      {
+        name: '餐厅类型',
+        type: 'pie',
+        radius: '50%',
+        data: pieData,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
+        label: {
+          formatter: '{b}: {c} ({d}%)'
+        }
+      }
+    ]
+  };
+
+  myChart.setOption(option);
+};
+
+const initRestaurantPieChart3 = () => {
+  // 假设 statistics3 是从后端获取的数据
+  const statistics3 = {
+    restaurant_pie_chart3: [
+      { restaurant_type: "Chinese", rating_group: "1-2", count: 41 },
+      { restaurant_type: "Chinese", rating_group: "2-3", count: 515 },
+      { restaurant_type: "Chinese", rating_group: "3-4", count: 1617 },
+      { restaurant_type: "Chinese", rating_group: "4-5", count: 1170 },
+      { restaurant_type: "American", rating_group: "1-2", count: 176 },
+      { restaurant_type: "American", rating_group: "2-3", count: 1888 },
+      { restaurant_type: "American", rating_group: "3-4", count: 5479 },
+      { restaurant_type: "American", rating_group: "4-5", count: 5523 },
+      { restaurant_type: "Mexico", rating_group: "1-2", count: 184 },
+      { restaurant_type: "Mexico", rating_group: "2-3", count: 693 },
+      { restaurant_type: "Mexico", rating_group: "3-4", count: 1677 },
+      { restaurant_type: "Mexico", rating_group: "4-5", count: 2060 }
+    ]
+  };
+
+  // 颜色数组
+  const colors = ['#6e8734', '#eea079', '#f57e91', '#78a8e0'];
+
+  // 提取每种餐厅类型的评分分段数据
+  const restaurantTypes = [...new Set(statistics3.restaurant_pie_chart3.map(item => item.restaurant_type))];
+
+  restaurantTypes.forEach((restaurantType, index) => {
+    const chartDom = document.getElementById(`restaurant_pie_chart3_${restaurantType}`);
+    const myChart = echarts.init(chartDom);
+
+    // 当前餐厅类型的评分分段数据
+    const pieData = statistics3.restaurant_pie_chart3
+      .filter(item => item.restaurant_type === restaurantType)
+      .map((item, idx) => ({
+        value: item.count,
+        name: item.rating_group,
+        itemStyle: { color: colors[idx % colors.length] }
+      }));
+
+    const option = {
+      title: {
+        text: `${restaurantType} 餐厅评分分布`,
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: pieData.map(item => item.name)
+      },
+      series: [
+        {
+          name: '评分分段',
+          type: 'pie',
+          radius: '50%',
+          data: pieData,
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          label: {
+            formatter: '{b}: {c} ({d}%)'
+          }
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+  });
+};
+
+
 </script>
 
 <template>
@@ -350,7 +557,14 @@ const initEliteUserPercentChart = () => {
     <div id="common_with_rate" style="width: 600px;height:400px;"></div>
     <div id="stars_high_city" style="width: 600px;height:400px;"></div>
     <div id="most_stars" style="width: 600px;height:400px;"></div>
-    <div id="review_in_year" style="width: 600px;height:400px;"></div>
+    <div id="top_category" style="width: 600px;height:400px;"></div>
+    <!-- <div id="review_in_year" style="width: 600px;height:400px;"></div> -->
+    <div id="restaurant_pie_chart" style="width: 600px;height:400px;"></div>
+    <div id="restaurant_pie_chart2" style="width: 600px;height:400px;"></div>
+    <div id="restaurant_pie_chart3_Chinese" style="width: 600px;height:400px;"></div>
+    <div id="restaurant_pie_chart3_American" style="width: 600px;height:400px;"></div>
+    <div id="restaurant_pie_chart3_Mexico" style="width: 600px;height:400px;"></div>
+    
     <!-- <div id="elite_user_percent" style="width: 600px;height:400px;"></div> -->
   </div>
   <div class="flex justify-center">

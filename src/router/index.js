@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/components/Login.vue';
 import TestApi from '@/components/TestApi.vue';
-import UserPortrait from '@/components/analyze/UserPortrait.vue';
 import BusinessInsights from '@/components/analyze/BusinessInsights.vue';
 import NearbyShops from '@/components/visualize/NearbyShops.vue';
 import FriendRecommend from '@/components/analyze/FriendRecommend.vue';
@@ -68,11 +67,6 @@ const routes = [
                 path: '/test-api',
                 name: 'TestApi',
                 component: TestApi,
-            },
-            {
-                path: '/portrait',
-                name: 'UserPortrait',
-                component: UserPortrait,
             },
             {
                 path: '/business',

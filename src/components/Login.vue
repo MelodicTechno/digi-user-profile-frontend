@@ -1,14 +1,27 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+  <div class="min-h-screen flex items-center justify-center bg-gray-100 relative">
+    <div class="absolute top-0 left-0 w-full h-1/2">
+      <img src="../assets/images/top-view-tasty-meaty-soup-with-potatoes-dark-desk.jpg" alt="bkg" class="w-full h-full object-cover" />
+    </div>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
       <h2 class="text-2xl font-bold mb-6 text-center">登录</h2>
       <form @submit.prevent="handleSubmit">
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-700">用户ID</label>
+          <input
+              type="text"
+              id="username"
+              v-model="loginData.userid"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              required
+          />
+        </div>
         <div class="mb-4">
           <label for="username" class="block text-sm font-medium text-gray-700">用户名</label>
           <input
               type="text"
               id="username"
-              v-model="loginData.userid"
+              v-model="loginData.username"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
           />
@@ -35,6 +48,7 @@ import router from "@/router/index.js";
 // 定义登录表单数据
 const loginData = ref({
   userid: '',
+  username: '' // 添加用户名字段
 });
 
 // 获取 user store
@@ -45,7 +59,10 @@ const handleSubmit = () => {
   console.log('loginData:', loginData.value); // 输出当前的登录数据
 
   // 存储用户信息到 user store
-  userStore.setUserInfo({userid: loginData.value.userid});
+  userStore.setUserInfo({
+    userid: loginData.value.userid,
+    username: loginData.value.username // 保存用户名
+  });
 
   // 跳转到指定页面
   router.push('/visualize/business');
